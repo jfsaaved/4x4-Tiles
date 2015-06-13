@@ -12,7 +12,7 @@ import com.juliansaavedra.game.ui.Tile;
 public class PlayState extends State {
 
     private final int MAX_FINGERS = 1;
-
+// test
     private Tile[][] tiles;
     private int tileSize;
     private float boardOffset;
