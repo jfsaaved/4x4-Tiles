@@ -11,8 +11,8 @@ import com.juliansaavedra.game.ui.Tile;
  */
 public class PlayState extends State {
 
-    private final int MAX_FINGERS = 1;
-// test
+    private final int MAX_FINGERS = 20;
+
     private Tile[][] tiles;
     private int tileSize;
     private float boardOffset;
@@ -58,7 +58,7 @@ public class PlayState extends State {
 
         for(int i = 0; i < MAX_FINGERS; i++)  {
             if(Gdx.input.isTouched(i)){
-                mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+                mouse.set(Gdx.input.getX(i), Gdx.input.getY(i), 0);
                 cam.unproject(mouse);
 
                 for(int row = 0; row < tiles.length; row++){

@@ -20,7 +20,7 @@ public class Tile extends Box {
     private float timer;
     private float maxTime = 0.5f;
     private float expiration;
-    private float maxExpiration;
+    private float maxExpiration = 1f;
     private boolean pressed;
 
     private Sound sound;
@@ -32,7 +32,6 @@ public class Tile extends Box {
         this.totalWidth = width - 8;
         this.totalHeight = height - 8;
 
-        maxExpiration = 1;
         light = MomoGame.res.getAtlas("pack").findRegion("light");
         dark = MomoGame.res.getAtlas("pack").findRegion("dark");
         sound = MomoGame.res.getSound(Integer.toString(num));
@@ -55,12 +54,26 @@ public class Tile extends Box {
         }
     }
 
+    public void updatePressed(){
+        if(selected == true){
+            pressed = true;
+            expiration += 1;
+            if(expiration > maxExpiration) {
+                selected = false;
+                pressed = false;
+                sound.stop();
+            }
+        }
+        else {
+            pressed = false;
+        }
+    }
+
     public void stopSound(){
         sound.stop();
     }
 
     public void update(float dt) {
-
         if(width < totalWidth && height < totalHeight) {
             timer += dt;
             width = (timer / maxTime) * totalWidth;
@@ -72,19 +85,7 @@ public class Tile extends Box {
             if(width > totalWidth) width = totalWidth;
             if(height > totalHeight) height = totalHeight;
         }
-
-        if(selected == true){
-            pressed = true;
-            expiration += 1;
-            if(expiration > maxExpiration) {
-                selected = false;
-                sound.stop();
-            }
-        }
-        else {
-            pressed = false;
-        }
-
+        updatePressed();
     }
     public void render(SpriteBatch sb) {
         if(selected) {
