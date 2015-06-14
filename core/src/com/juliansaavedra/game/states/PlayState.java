@@ -64,7 +64,6 @@ public class PlayState extends State {
                 for(int row = 0; row < tiles.length; row++){
                     for(int col = 0; col < tiles[0].length; col++){
                         if(tiles[row][col].contains(mouse.x,mouse.y)) {
-                            tiles[row][col].setSelected(true);
                             tiles[row][col].playSound();
                         }
                     }

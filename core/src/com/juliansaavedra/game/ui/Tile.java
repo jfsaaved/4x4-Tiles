@@ -21,7 +21,6 @@ public class Tile extends Box {
     private float maxTime = 0.5f;
     private float expiration;
     private float maxExpiration = 1f;
-    private boolean pressed;
 
     private Sound sound;
 
@@ -41,31 +40,21 @@ public class Tile extends Box {
         timer = t;
     }
 
-    public void setSelected(boolean b) {
-        selected = b;
-        if(selected == true) {
-            expiration = 0;
-        }
-    }
-
     public void playSound(){
-        if(pressed == false) {
+        expiration = 0;
+        if(selected == false) {
+            selected = true;
             sound.play();
         }
     }
 
     public void updatePressed(){
         if(selected == true){
-            pressed = true;
             expiration += 1;
-            if(expiration > maxExpiration) {
-                selected = false;
-                pressed = false;
+            if(expiration > maxExpiration){
                 sound.stop();
+                selected = false;
             }
-        }
-        else {
-            pressed = false;
         }
     }
 
