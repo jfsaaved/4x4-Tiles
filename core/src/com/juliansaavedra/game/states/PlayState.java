@@ -17,11 +17,19 @@ public class PlayState extends State {
     private int tileSize;
     private float boardOffset;
 
+    private boolean showPreview;
+    private int rowIndex;
+    private int colIndex;
+    private float soundStart;
+    private final float soundFinish = 38f;
+    private Tile currentTile;
+
     public PlayState(GSM gsm, String soundPack){
         super(gsm);
 
         loadSoundPack(soundPack, false);
         createTiles();
+        initPreview();
 
     }
 
@@ -54,8 +62,39 @@ public class PlayState extends State {
         }
     }
 
-    public void handleInput() {
+    public void initPreview(){
+        showPreview = true;
+        rowIndex = 0;
+        colIndex = 0;
+        soundStart = 0;
+        currentTile = tiles[rowIndex][colIndex];
+    }
 
+    public void playPattern(){
+        currentTile.playSound();
+        if(soundStart > soundFinish) {
+            soundStart = 0;
+            if(colIndex < tiles[0].length) {
+                colIndex++;
+                if(colIndex >= tiles[0].length) {
+                    if(rowIndex < tiles.length) {
+                        rowIndex++;
+                    }
+                    colIndex = 0;
+                }
+                if(colIndex < tiles[0].length && rowIndex < tiles.length) {
+                    currentTile = tiles[rowIndex][colIndex];
+                }
+                else {
+                    //initPreview();
+                    showPreview = false;
+                    currentTile.updatePressed();
+                }
+            }
+        }
+    }
+
+    public void handleInput() {
         for(int i = 0; i < MAX_FINGERS; i++)  {
             if(Gdx.input.isTouched(i)){
                 mouse.set(Gdx.input.getX(i), Gdx.input.getY(i), 0);
@@ -73,6 +112,10 @@ public class PlayState extends State {
     }
 
     public void update(float dt) {
+        if(showPreview == true){
+            playPattern();
+            soundStart++;
+        }
 
         handleInput();
         for(int row = 0 ; row < tiles.length ; row ++){
@@ -80,7 +123,6 @@ public class PlayState extends State {
                 tiles[row][col].update(dt);
             }
         }
-
     }
 
     public void render(SpriteBatch sb) {
