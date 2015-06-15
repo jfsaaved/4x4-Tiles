@@ -23,37 +23,32 @@ public class PlayState extends State {
 
     private String[] patternPacks;
     private String[] patternSplitter;
-    private int[] rowI = new int[15];
-    private int[] colI = new int[15];
-    private int previewIndex;
+    private int[] previewRow = new int [16];
+    private int[] previewCol = new int [16];
+
     private boolean patternPlaying;
-    private Tile[][] currentTile;
-    private float soundStart;
-    private float soundFinish = 40f;
+    private float soundCount;
+    private float soundFinish;
+    private int previewIndex;
 
     public PlayState(GSM gsm, String soundPack){
         super(gsm);
 
         loadSoundPack(soundPack, false);
         createTiles();
-        initPreview();
-        getPatterns();
-        setPattern(soundPack);
-        playPattern(soundPack);
+        initPreview(1);
 
     }
 
-    public void loadSoundPack(String name, boolean playBeat){
-        if(name.equals("default")){
-            for(int i = 0 ; i < 16 ; i ++){
-                int beatIndex = i + 1;
-                String fileName = "pack1/sound"+beatIndex+".wav";
-                MomoGame.res.loadSound(fileName,""+i);
-            }
-            if(playBeat == true){
-                MomoGame.res.getMusic("beat").setLooping(true);
-                MomoGame.res.getMusic("beat").play();
-            }
+    public void loadSoundPack(String name, boolean playBeat) {
+        for (int i = 0; i < 16; i++) {
+            int beatIndex = i + 1;
+            String fileName = name + "/sound" + beatIndex + ".wav";
+            MomoGame.res.loadSound(fileName, "" + i);
+        }
+        if (playBeat == true) {
+            MomoGame.res.getMusic("beat").setLooping(true);
+            MomoGame.res.getMusic("beat").play();
         }
     }
 
@@ -72,47 +67,50 @@ public class PlayState extends State {
         }
     }
 
-    public void getPatterns(){
+    public void getPatterns(int pack){
         FileHandle file = Gdx.files.internal("music.txt");
         String text = file.readString();
         patternPacks = text.split(";");
+        System.out.println(patternPacks[pack]);
     }
 
-    public void setPattern(String name) {
-        boolean rowOrCol = false;
-        int rowP = 0;
-        int colP = 0;
-        int i = 1;
-        if(name.equals("default")) {
-            patternSplitter = patternPacks[0].split(",");
-            while(i < 31){
-                if(rowOrCol == false) {
-                    rowI[rowP] = Integer.parseInt(patternSplitter[i]);
-                    rowP++;
-                    rowOrCol = true;
-                }
-                else if(rowOrCol == true) {
-                    colI[colP] = Integer.parseInt(patternSplitter[i]);
-                    colP++;
-                    rowOrCol = false;
-                }
-                i++;
+    public void setPattern(int pack) {
+        boolean alternate = false;
+        patternSplitter = patternPacks[pack].split(",");
+        for(int i = 1 ; i <= 32 ; i ++){
+            int index = ((i-1)/2);
+            if(alternate == false){
+                previewRow[index] = Integer.parseInt(patternSplitter[i]);
+                System.out.println("R: "+previewRow[index]);
+                alternate = true;
             }
-
+            else if(alternate == true){
+                previewCol[index] = Integer.parseInt(patternSplitter[i]);
+                System.out.println("C: "+previewCol[index]);
+                alternate = false;
+            }
         }
     }
 
-    public void playPattern(String name) {
+    public void playPattern() {
+        tiles[previewRow[previewIndex]][previewCol[previewIndex]].playSound();
+        if(soundCount > soundFinish) {
+            if (previewIndex < previewRow.length - 1) {
+                soundCount = 0;
+                previewIndex++;
+            } else {
+                patternPlaying = false;
+            }
+        }
+    }
+
+    public void initPreview(int previewPattern) {
+        getPatterns(previewPattern);
+        setPattern(previewPattern);
         patternPlaying = true;
-        if(name.equals("default")){
-            currentTile[rowI[previewIndex]][colI[previewIndex]].playSound();
-        }
-    }
-
-    public void initPreview() {
-        soundStart = 0;
         previewIndex = 0;
-        currentTile = tiles;
+        soundCount = 0;
+        soundFinish = 40f;
     }
 
     public void handleInput() {
@@ -135,14 +133,12 @@ public class PlayState extends State {
     public void update(float dt) {
 
         if(patternPlaying == true){
-            soundStart++;
-            if(soundStart > soundFinish) {
-                playPattern("default");
-                previewIndex++;
-            }
+            playPattern();
+            soundCount++;
         }
-
-        handleInput();
+        else {
+            handleInput();
+        }
         for(int row = 0 ; row < tiles.length ; row ++){
             for (int col = 0; col < tiles[0].length; col++){
                 tiles[row][col].update(dt);
