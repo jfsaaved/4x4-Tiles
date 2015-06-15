@@ -2,9 +2,13 @@ package com.juliansaavedra.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.juliansaavedra.game.MomoGame;
 import com.juliansaavedra.game.ui.Tile;
+
+import java.util.Scanner;
+import java.util.logging.FileHandler;
 
 /**
  * Created by 343076 on 27/05/2015.
@@ -17,12 +21,15 @@ public class PlayState extends State {
     private int tileSize;
     private float boardOffset;
 
-    private boolean showPreview;
-    private int rowIndex;
-    private int colIndex;
+    private String[] patternPacks;
+    private String[] patternSplitter;
+    private int[] rowI = new int[15];
+    private int[] colI = new int[15];
+    private int previewIndex;
+    private boolean patternPlaying;
+    private Tile[][] currentTile;
     private float soundStart;
-    private final float soundFinish = 38f;
-    private Tile currentTile;
+    private float soundFinish = 40f;
 
     public PlayState(GSM gsm, String soundPack){
         super(gsm);
@@ -30,6 +37,9 @@ public class PlayState extends State {
         loadSoundPack(soundPack, false);
         createTiles();
         initPreview();
+        getPatterns();
+        setPattern(soundPack);
+        playPattern(soundPack);
 
     }
 
@@ -37,7 +47,7 @@ public class PlayState extends State {
         if(name.equals("default")){
             for(int i = 0 ; i < 16 ; i ++){
                 int beatIndex = i + 1;
-                String fileName = "avenger/sound"+beatIndex+".wav";
+                String fileName = "pack1/sound"+beatIndex+".wav";
                 MomoGame.res.loadSound(fileName,""+i);
             }
             if(playBeat == true){
@@ -62,36 +72,47 @@ public class PlayState extends State {
         }
     }
 
-    public void initPreview(){
-        showPreview = true;
-        rowIndex = 0;
-        colIndex = 0;
-        soundStart = 0;
-        currentTile = tiles[rowIndex][colIndex];
+    public void getPatterns(){
+        FileHandle file = Gdx.files.internal("music.txt");
+        String text = file.readString();
+        patternPacks = text.split(";");
     }
 
-    public void playPattern(){
-        currentTile.playSound();
-        if(soundStart > soundFinish) {
-            soundStart = 0;
-            if(colIndex < tiles[0].length) {
-                colIndex++;
-                if(colIndex >= tiles[0].length) {
-                    if(rowIndex < tiles.length) {
-                        rowIndex++;
-                    }
-                    colIndex = 0;
+    public void setPattern(String name) {
+        boolean rowOrCol = false;
+        int rowP = 0;
+        int colP = 0;
+        int i = 1;
+        if(name.equals("default")) {
+            patternSplitter = patternPacks[0].split(",");
+            while(i < 31){
+                if(rowOrCol == false) {
+                    rowI[rowP] = Integer.parseInt(patternSplitter[i]);
+                    rowP++;
+                    rowOrCol = true;
                 }
-                if(colIndex < tiles[0].length && rowIndex < tiles.length) {
-                    currentTile = tiles[rowIndex][colIndex];
+                else if(rowOrCol == true) {
+                    colI[colP] = Integer.parseInt(patternSplitter[i]);
+                    colP++;
+                    rowOrCol = false;
                 }
-                else {
-                    //initPreview();
-                    showPreview = false;
-                    currentTile.updatePressed();
-                }
+                i++;
             }
+
         }
+    }
+
+    public void playPattern(String name) {
+        patternPlaying = true;
+        if(name.equals("default")){
+            currentTile[rowI[previewIndex]][colI[previewIndex]].playSound();
+        }
+    }
+
+    public void initPreview() {
+        soundStart = 0;
+        previewIndex = 0;
+        currentTile = tiles;
     }
 
     public void handleInput() {
@@ -112,9 +133,13 @@ public class PlayState extends State {
     }
 
     public void update(float dt) {
-        if(showPreview == true){
-            playPattern();
+
+        if(patternPlaying == true){
             soundStart++;
+            if(soundStart > soundFinish) {
+                playPattern("default");
+                previewIndex++;
+            }
         }
 
         handleInput();
