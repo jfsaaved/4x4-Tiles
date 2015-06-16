@@ -19,7 +19,7 @@ public class MenuState extends State {
     public void handleInput() {
         if(Gdx.input.isTouched()){
             System.out.println("Exiting Main Menu!");
-            gsm.set(new PlayState(gsm,"0"));
+            gsm.set(new PlayState(gsm,"pack0"));
         }
     }
 

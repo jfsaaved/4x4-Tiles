@@ -36,7 +36,7 @@ public class PlayState extends State {
 
         loadSoundPack(soundPack, false);
         createTiles();
-        initPreview(1);
+        initPreview(0);
 
     }
 
@@ -67,6 +67,7 @@ public class PlayState extends State {
         }
     }
 
+    /*Parse the music.txt file to get all the patterns*/
     public void getPatterns(int pack){
         FileHandle file = Gdx.files.internal("music.txt");
         String text = file.readString();
@@ -74,6 +75,7 @@ public class PlayState extends State {
         System.out.println(patternPacks[pack]);
     }
 
+    /*Parse the String obtained from getPatterns method to get individual row and col index*/
     public void setPattern(int pack) {
         boolean alternate = false;
         patternSplitter = patternPacks[pack].split(",");
@@ -110,7 +112,7 @@ public class PlayState extends State {
         patternPlaying = true;
         previewIndex = 0;
         soundCount = 0;
-        soundFinish = 40f;
+        soundFinish = 38f;
     }
 
     public void handleInput() {
