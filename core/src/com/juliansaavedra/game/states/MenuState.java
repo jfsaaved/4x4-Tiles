@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.ui.TextImage;
 import com.juliansaavedra.game.ui.Tile;
 
 /**
@@ -11,15 +12,30 @@ import com.juliansaavedra.game.ui.Tile;
  */
 public class MenuState extends State {
 
+    private TextImage play;
+    private TextImage title;
+    private TextImage exit;
+
     public MenuState(GSM gsm) {
         super(gsm);
         System.out.println("Entering Main Menu!");
+
+        title = new TextImage("momo",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 + 200);
+        play = new TextImage("play",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+        exit = new TextImage("exit",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 100);
     }
 
     public void handleInput() {
         if(Gdx.input.isTouched()){
-            System.out.println("Exiting Main Menu!");
-            gsm.set(new PlayState(gsm,"pack0"));
+            mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            cam.unproject(mouse);
+            if(play.contains(mouse.x,mouse.y)){
+                System.out.println("Exiting Main Menu!");
+                gsm.set(new PlayState(gsm,"pack0"));
+            }
+            else if(exit.contains(mouse.x,mouse.y)){
+                Gdx.app.exit();
+            }
         }
     }
 
@@ -28,7 +44,12 @@ public class MenuState extends State {
     }
 
     public void render(SpriteBatch sb) {
-
+        sb.setProjectionMatrix(cam.combined);
+        sb.begin();
+        title.render(sb);
+        play.render(sb);
+        exit.render(sb);
+        sb.end();
     }
 
 }
