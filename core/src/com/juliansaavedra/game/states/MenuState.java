@@ -23,6 +23,7 @@ public class MenuState extends State {
         title = new TextImage("momo",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 + 200 , 1);
         play = new TextImage("play",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2, 1);
         exit = new TextImage("exit",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 100, 1);
+
     }
 
     public void handleInput() {

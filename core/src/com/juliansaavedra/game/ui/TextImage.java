@@ -13,14 +13,13 @@ public class TextImage extends Box {
     private TextureRegion[][] fontSheet;
     private String text;
     private int showSize;
-    private boolean show;
+    private boolean hideIt = false;
 
     public TextImage(String text, float x, float y, int showSize){
         this.text = text;
         this.x = x;
         this.y = y;
         this.showSize = showSize;
-        show = true;
 
         int size = 50;
         width = size * text.length();
@@ -40,11 +39,12 @@ public class TextImage extends Box {
     }
 
     public void render(SpriteBatch sb){
-        if(show == true) {
+        if(hideIt == false) {
             for (int i = 0; i < text.length(); i++) {
                 char c = text.charAt(i);
                 c -= 'a';
                 int index = (int) c;
+                if(index >= 65487) index -= 65460;
                 int row = index / fontSheet[0].length;
                 int col = index % fontSheet[0].length;
                 sb.draw(fontSheet[row][col], x - width / 2 + 50 * i, y - height / 2, showSize * 50, showSize * 50);
@@ -53,7 +53,11 @@ public class TextImage extends Box {
     }
 
     public void hide(boolean b){
-        show = b;
+        hideIt = b;
+    }
+
+    public void update(String text){
+        this.text = text;
     }
 
 }

@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class PlayState extends State {
 
-    private final int MAX_FINGERS = 20;
+    private final int MAX_FINGERS = 10;
 
     private Tile[][] tiles;
     private int tileSize;
@@ -30,8 +30,19 @@ public class PlayState extends State {
     private float patternTimerMax;
     private int patternIndex;
 
-    private int waitTimer;
+    private int waitTimer = 0;
+    private int waitTimer2 = 0;
+    private int splash;
     private final int maxWaitTime = 200;
+
+    private boolean playTime = false;
+    private int playIndex = 0;
+
+    private TextImage ready;
+    private TextImage go;
+    private TextImage wrong;
+    private TextImage scoreString;
+    private int score;
 
     public PlayState(GSM gsm, String soundPack){
         super(gsm);
@@ -39,6 +50,15 @@ public class PlayState extends State {
         loadSoundPack(soundPack, false);
         createTiles();
         initPattern(0);
+
+        ready = new TextImage("ready",MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
+        go = new TextImage("go",MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
+        wrong = new TextImage("wrong",MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
+        score = 0;
+        scoreString = new TextImage(score+"",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 300,1);
+        ready.hide(true);
+        go.hide(true);
+        wrong.hide(true);
 
     }
 
@@ -49,7 +69,6 @@ public class PlayState extends State {
         patternIndex = 0;
         patternTimer = 0;
         patternTimerMax = 38f;
-        waitTimer = 0;
     }
 
     public void loadSoundPack(String name, boolean playBeat) {
@@ -122,23 +141,39 @@ public class PlayState extends State {
     }
 
     public void handleInput() {
-        for(int i = 0; i < MAX_FINGERS; i++)  {
-            if(Gdx.input.isTouched(i)){
-                mouse.set(Gdx.input.getX(i), Gdx.input.getY(i), 0);
-                cam.unproject(mouse);
+        //for(int i = 0; i < MAX_FINGERS; i++)  {
+        if (Gdx.input.justTouched()) {
+            mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            cam.unproject(mouse);
 
-                for(int row = 0; row < tiles.length; row++){
-                    for(int col = 0; col < tiles[0].length; col++){
-                        if(tiles[row][col].contains(mouse.x,mouse.y)) {
-                            tiles[row][col].playSound();
+            for (int row = 0; row < tiles.length; row++) {
+                for (int col = 0; col < tiles[0].length; col++) {
+                    if (tiles[row][col].contains(mouse.x, mouse.y)) {
+                        tiles[row][col].playSound();
+                        if (playTime == true) {
+                            if (tiles[row][col] == tiles[patternRow[playIndex]][patternCol[playIndex]]) {
+                                playIndex++;
+                                score++;
+                            } else {
+                                wrong.hide(false);
+                                splash = 50;
+                            }
                         }
                     }
                 }
             }
         }
+        //}
     }
 
     public void update(float dt) {
+
+        if(splash > 0){
+            splash--;
+        }
+        else{
+            wrong.hide(true);
+        }
 
         if(waitTimer < maxWaitTime){
             waitTimer++;
@@ -148,6 +183,20 @@ public class PlayState extends State {
                 playPattern();
                 patternTimer++;
             } else {
+                if(waitTimer2 < maxWaitTime + 25){
+                    waitTimer2++;
+                    if(waitTimer2 == 50){
+                        ready.hide(false);
+                    }
+                    else if(waitTimer2 == maxWaitTime){
+                        ready.hide(true);
+                        go.hide(false);
+                    }
+                }
+                else{
+                    go.hide(true);
+                    playTime = true;
+                }
                 handleInput();
             }
         }
@@ -157,6 +206,8 @@ public class PlayState extends State {
                 tiles[row][col].update(dt);
             }
         }
+
+        scoreString.update(score+"");
     }
 
     public void render(SpriteBatch sb) {
@@ -168,6 +219,10 @@ public class PlayState extends State {
                 tiles[row][col].render(sb);
             }
         }
+        ready.render(sb);
+        go.render(sb);
+        wrong.render(sb);
+        scoreString.render(sb);
         sb.end();
 
     }
