@@ -1,14 +1,13 @@
 package com.juliansaavedra.game.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.ui.TextImage;
 import com.juliansaavedra.game.ui.Tile;
 
-import java.util.Scanner;
-import java.util.logging.FileHandler;
+import java.util.Random;
 
 /**
  * Created by 343076 on 27/05/2015.
@@ -23,21 +22,34 @@ public class PlayState extends State {
 
     private String[] patternPacks;
     private String[] patternSplitter;
-    private int[] previewRow = new int [16];
-    private int[] previewCol = new int [16];
+    private int[] patternRow = new int [16];
+    private int[] patternCol = new int [16];
 
-    private boolean patternPlaying;
-    private float soundCount;
-    private float soundFinish;
-    private int previewIndex;
+    private boolean patternReady;
+    private float patternTimer;
+    private float patternTimerMax;
+    private int patternIndex;
+
+    private int waitTimer;
+    private final int maxWaitTime = 200;
 
     public PlayState(GSM gsm, String soundPack){
         super(gsm);
 
         loadSoundPack(soundPack, false);
         createTiles();
-        initPreview(0);
+        initPattern(0);
 
+    }
+
+    public void initPattern(int previewPattern) {
+        getPatterns(previewPattern);
+        setPattern(previewPattern);
+        patternReady = true;
+        patternIndex = 0;
+        patternTimer = 0;
+        patternTimerMax = 38f;
+        waitTimer = 0;
     }
 
     public void loadSoundPack(String name, boolean playBeat) {
@@ -46,7 +58,7 @@ public class PlayState extends State {
             String fileName = name + "/sound" + beatIndex + ".wav";
             MomoGame.res.loadSound(fileName, "" + i);
         }
-        if (playBeat == true) {
+        if (playBeat) {
             MomoGame.res.getMusic("beat").setLooping(true);
             MomoGame.res.getMusic("beat").play();
         }
@@ -61,7 +73,10 @@ public class PlayState extends State {
         for(int row = 0 ; row < tiles.length ; row ++){
             for (int col = 0; col < tiles[0].length; col++){
                 tiles[row][col] = new Tile( col * tileSize + tileSize / 2, row * tileSize + boardOffset + tileSize / 2, tileSize, tileSize, soundNum);
-                tiles[row][col].setTimer((-(tiles.length - row) - col) * 0.25f);
+                Random random = new Random();
+                int animation = random.nextInt(99) + 1;
+                tiles[row][col].setTimer(-(animation) * 0.01f);
+                //tiles[row][col].setTimer((-(tiles.length - row) - col) * 0.25f);
                 soundNum++;
             }
         }
@@ -82,37 +97,28 @@ public class PlayState extends State {
         for(int i = 1 ; i <= 32 ; i ++){
             int index = ((i-1)/2);
             if(alternate == false){
-                previewRow[index] = Integer.parseInt(patternSplitter[i]);
-                System.out.println("R: "+previewRow[index]);
+                patternRow[index] = Integer.parseInt(patternSplitter[i]);
+                //System.out.println("R: "+patternRow[index]);
                 alternate = true;
             }
             else if(alternate == true){
-                previewCol[index] = Integer.parseInt(patternSplitter[i]);
-                System.out.println("C: "+previewCol[index]);
+                patternCol[index] = Integer.parseInt(patternSplitter[i]);
+                //System.out.println("C: "+patternCol[index]);
                 alternate = false;
             }
         }
     }
 
     public void playPattern() {
-        tiles[previewRow[previewIndex]][previewCol[previewIndex]].playSound();
-        if(soundCount > soundFinish) {
-            if (previewIndex < previewRow.length - 1) {
-                soundCount = 0;
-                previewIndex++;
+        tiles[patternRow[patternIndex]][patternCol[patternIndex]].playSound();
+        if(patternTimer > patternTimerMax) {
+            if (patternIndex < patternRow.length - 1) {
+                patternTimer = 0;
+                patternIndex++;
             } else {
-                patternPlaying = false;
+                patternReady = false;
             }
         }
-    }
-
-    public void initPreview(int previewPattern) {
-        getPatterns(previewPattern);
-        setPattern(previewPattern);
-        patternPlaying = true;
-        previewIndex = 0;
-        soundCount = 0;
-        soundFinish = 38f;
     }
 
     public void handleInput() {
@@ -134,15 +140,20 @@ public class PlayState extends State {
 
     public void update(float dt) {
 
-        if(patternPlaying == true){
-            playPattern();
-            soundCount++;
+        if(waitTimer < maxWaitTime){
+            waitTimer++;
         }
         else {
-            handleInput();
+            if (patternReady == true) {
+                playPattern();
+                patternTimer++;
+            } else {
+                handleInput();
+            }
         }
-        for(int row = 0 ; row < tiles.length ; row ++){
-            for (int col = 0; col < tiles[0].length; col++){
+
+        for (int row = 0; row < tiles.length; row++) {
+            for (int col = 0; col < tiles[0].length; col++) {
                 tiles[row][col].update(dt);
             }
         }

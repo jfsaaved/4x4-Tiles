@@ -44,8 +44,15 @@ public class Tile extends Box {
         expiration = 0;
         if(selected == false) {
             selected = true;
-            sound.play();
+            //sound.play();
         }
+    }
+
+    public boolean isFinished(){
+        if(width == totalWidth && height == totalHeight)
+            return true;
+        else
+            return false;
     }
 
     public void updatePressed(){
