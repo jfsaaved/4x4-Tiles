@@ -151,12 +151,14 @@ public class PlayState extends State {
                     if (tiles[row][col].contains(mouse.x, mouse.y)) {
                         tiles[row][col].playSound();
                         if (playTime == true) {
-                            if (tiles[row][col] == tiles[patternRow[playIndex]][patternCol[playIndex]]) {
-                                playIndex++;
-                                score++;
-                            } else {
-                                wrong.hide(false);
-                                splash = 50;
+                            if (playIndex < 16) {
+                                if (tiles[row][col] == tiles[patternRow[playIndex]][patternCol[playIndex]]) {
+                                    playIndex++;
+                                    score++;
+                                } else {
+                                    wrong.hide(false);
+                                    splash = 50;
+                                }
                             }
                         }
                     }
