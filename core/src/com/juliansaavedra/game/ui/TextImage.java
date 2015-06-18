@@ -56,8 +56,14 @@ public class TextImage extends Box {
         hideIt = b;
     }
 
-    public void update(String text){
+    public void update(String text, float x, float y){
         this.text = text;
+        this.x = x;
+        this.y = y;
+
+        int size = 50;
+        width = size * text.length();
+        height = size;
     }
 
 }
