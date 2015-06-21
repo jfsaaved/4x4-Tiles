@@ -241,18 +241,14 @@ public class PlayState extends State {
             if(prepareTime == 260){
                 if(level < 3) {
                     level++;
-                    splashString.hide(true);
-                    splash = 0; // Reset from -1 to 0 to avoid Splash Text showing
-                    playIndex = 0; // Reset the pattern index to 0
-                    initPattern(level);
                 }
                 else{
                     level = 0;
-                    splashString.hide(true);
-                    splash = 0; // Reset from -1 to 0 to avoid Splash Text showing
-                    playIndex = 0; // Reset the pattern index to 0
-                    initPattern(level);
                 }
+                splashString.hide(true);
+                splash = 0; // Reset from -1 to 0 to avoid Splash Text showing
+                playIndex = 0; // Reset the pattern index to 0
+                initPattern(level);
             }
         }
         else if (prepareTime > 149 && prepareTime <= 250){ // Timer for pattern initialization/showing level
