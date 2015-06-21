@@ -35,7 +35,7 @@ public class PlayState extends State {
     private TextImage scoreString;
     private int prepareTime;
     private int splash;
-    private int score = 0;
+    private int score = 3;
 
     private int level = 0;
 
@@ -170,6 +170,10 @@ public class PlayState extends State {
                                     playIndex++;
                                     score++;
                                 } else {
+                                    score--;
+                                    if(score == -1){
+                                        gsm.set(new GameOverState(gsm));
+                                    }
                                     splashString.update("wrong", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
                                     splashString.hide(false);
                                     splash = 50;
