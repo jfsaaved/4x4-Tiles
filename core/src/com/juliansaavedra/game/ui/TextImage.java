@@ -45,6 +45,7 @@ public class TextImage extends Box {
                 c -= 'a';
                 int index = (int) c;
                 if(index >= 65487) index -= 65460;
+                else if(index == 65471) index -= 65445;
                 int row = index / fontSheet[0].length;
                 int col = index % fontSheet[0].length;
                 sb.draw(fontSheet[row][col], x - width / 2 + 50 * i, y - height / 2, showSize * 50, showSize * 50);

@@ -18,7 +18,6 @@ public class MenuState extends State {
 
     public MenuState(GSM gsm) {
         super(gsm);
-        System.out.println("Entering Main Menu!");
 
         title = new TextImage("momo",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 + 200 , 1);
         play = new TextImage("play",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2, 1);
@@ -31,8 +30,7 @@ public class MenuState extends State {
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
             if(play.contains(mouse.x,mouse.y)){
-                System.out.println("Exiting Main Menu!");
-                gsm.set(new PlayState(gsm,"insane"));
+                gsm.set(new DifficultyState(gsm));
             }
             else if(exit.contains(mouse.x,mouse.y)){
                 Gdx.app.exit();
