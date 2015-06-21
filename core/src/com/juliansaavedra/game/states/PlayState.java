@@ -17,11 +17,8 @@ public class PlayState extends State {
     private final int MAX_FINGERS = 10;
 
     private Tile[][] tiles;
-    private int tileSize;
-    private float boardOffset;
 
     private String[] patternPacks;
-    private String[] patternSplitter;
     private int[] patternRow = new int [16];
     private int[] patternCol = new int [16];
 
@@ -29,27 +26,52 @@ public class PlayState extends State {
     private float patternTimer;
     private float patternTimerMax;
     private int patternIndex;
+    private String patternLevel;
 
     private boolean playTime = false;
     private int playIndex = 0;
 
     private TextImage splashString;
     private TextImage scoreString;
-    private int prepare;
+    private int prepareTime;
     private int splash;
     private int score = 0;
 
-    public PlayState(GSM gsm, String soundPack){
-        super(gsm);
+    private int level = 0;
 
-        loadSoundPack(soundPack, false);
-        createTiles();
-        initPattern(0);
+    public PlayState(GSM gsm,String difficulty){
+        super(gsm);
 
         splashString = new TextImage("ready",MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
         scoreString = new TextImage(score+"",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 300,1);
         splashString.hide(true);
 
+        setDifficulty(difficulty);
+        loadSoundPack("pack0", false);
+        createTiles();
+        initPattern(level);
+
+    }
+
+    public void setDifficulty(String difficulty){
+        if(difficulty.equals("easy")){
+            patternTimerMax = 38f;
+        }
+        else if(difficulty.equals("normal")){
+            patternTimerMax = 19f;
+        }
+        else if(difficulty.equals("hard")){
+            patternTimerMax = 5f;
+        }
+        else if(difficulty.equals("very hard")){
+            patternTimerMax = 1f;
+        }
+        else if(difficulty.equals("insane")){
+            patternTimerMax = 0.01f;
+        }
+        else{
+            patternTimerMax = 19f;
+        }
     }
 
     public void initPattern(int previewPattern) {
@@ -58,8 +80,10 @@ public class PlayState extends State {
         patternReady = true;
         patternIndex = 0;
         patternTimer = 0;
-        patternTimerMax = 38f;
-        prepare = 200;
+
+        splashString.update(patternLevel, MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+        splashString.hide(false);
+        prepareTime = 250;
     }
 
     public void loadSoundPack(String name, boolean playBeat) {
@@ -76,8 +100,8 @@ public class PlayState extends State {
 
     public void createTiles(){
         tiles = new Tile[4][4];
-        tileSize = MomoGame.WIDTH / tiles[0].length;
-        boardOffset = (MomoGame.HEIGHT - (tileSize * tiles.length)) / 2;
+        int tileSize = MomoGame.WIDTH / tiles[0].length;
+        float boardOffset = (MomoGame.HEIGHT - (tileSize * tiles.length)) / 2;
 
         int soundNum = 0;
         for(int row = 0 ; row < tiles.length ; row ++){
@@ -103,15 +127,16 @@ public class PlayState extends State {
     /*Parse the String obtained from getPatterns method to get individual row and col index*/
     public void setPattern(int pack) {
         boolean alternate = false;
-        patternSplitter = patternPacks[pack].split(",");
+        String[] patternSplitter = patternPacks[pack].split(",");
+        patternLevel = patternSplitter[0].trim();
         for(int i = 1 ; i <= 32 ; i ++){
             int index = ((i-1)/2);
-            if(alternate == false){
+            if(!alternate){
                 patternRow[index] = Integer.parseInt(patternSplitter[i]);
                 //System.out.println("R: "+patternRow[index]);
                 alternate = true;
             }
-            else if(alternate == true){
+            else if(alternate){
                 patternCol[index] = Integer.parseInt(patternSplitter[i]);
                 //System.out.println("C: "+patternCol[index]);
                 alternate = false;
@@ -132,8 +157,37 @@ public class PlayState extends State {
     }
 
     public void handleInput() {
-        //for(int i = 0; i < MAX_FINGERS; i++)  {
-        if (Gdx.input.justTouched()) {
+
+        if(Gdx.input.justTouched()){
+            mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            cam.unproject(mouse);
+            for (int row = 0; row < tiles.length; row++) {
+                for (int col = 0; col < tiles[0].length; col++) {
+                    if (tiles[row][col].contains(mouse.x, mouse.y)) {
+                        if (playTime) {
+                            if (playIndex < 16) {
+                                if (tiles[row][col] == tiles[patternRow[playIndex]][patternCol[playIndex]]) {
+                                    playIndex++;
+                                    score++;
+                                } else {
+                                    splashString.update("wrong", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+                                    splashString.hide(false);
+                                    splash = 50;
+                                }
+                            }
+                            else{
+                                playTime = false;
+                                splashString.update("complete", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+                                splashString.hide(false);
+                                prepareTime = 350;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        else if (Gdx.input.isTouched()) {
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
 
@@ -141,51 +195,37 @@ public class PlayState extends State {
                 for (int col = 0; col < tiles[0].length; col++) {
                     if (tiles[row][col].contains(mouse.x, mouse.y)) {
                         tiles[row][col].playSound();
-                        if (playTime == true) {
-                            if (playIndex < 16) {
-                                if (tiles[row][col] == tiles[patternRow[playIndex]][patternCol[playIndex]]) {
-                                    playIndex++;
-                                    score++;
-                                } else {
-                                    splashString.update("wrong",MomoGame.WIDTH/2,MomoGame.HEIGHT/2);
-                                    splashString.hide(false);
-                                    splash = 50;
-                                }
-                            }
-                            else{
-                                playIndex = 0;
-                                Random random = new Random();
-                                int pat = random.nextInt(2);
-                                initPattern(pat);
-                            }
-                        }
                     }
                 }
             }
         }
-        //}
     }
 
     public void update(float dt) {
 
-        if(prepare < 150){
+        if(prepareTime < 150){ // Pattern initialized
             if(patternReady){
                 playPattern();
                 patternTimer++;
             }
             else{
-                if(prepare > 50){
+                if(prepareTime > 50){
                     splashString.update("ready",MomoGame.WIDTH/2,MomoGame.HEIGHT/2);
                     splashString.hide(false);
-                    prepare--;
+                    prepareTime--;
                 }
-                else if(prepare <= 50 && prepare > 0){
-                    splashString.update("go",MomoGame.WIDTH/2,MomoGame.HEIGHT/2);
-                    splashString.hide(false);
+                else if(prepareTime <= 50 && prepareTime > 0){
                     playTime = true;
-                    prepare--;
+                    if(splash > 0){ // If user selected a wrong tile, let text change to "wrong" and discard "go"
+                        prepareTime = 0;
+                    }
+                    else {
+                        splashString.update("go", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+                        splashString.hide(false);
+                        prepareTime--;
+                    }
                 }
-                else if(prepare <= 0){
+                else if(prepareTime <= 0){
                     if(splash > 0){
                         splash--;
                     }else if(splash == 0){
@@ -196,8 +236,30 @@ public class PlayState extends State {
                 handleInput();
             }
         }
-        else{
-            prepare--;
+        else if(prepareTime > 250 && prepareTime <= 350){ // A level is completed
+            prepareTime--;
+            if(prepareTime == 260){
+                if(level < 3) {
+                    level++;
+                    splashString.hide(true);
+                    splash = 0; // Reset from -1 to 0 to avoid Splash Text showing
+                    playIndex = 0; // Reset the pattern index to 0
+                    initPattern(level);
+                }
+                else{
+                    level = 0;
+                    splashString.hide(true);
+                    splash = 0; // Reset from -1 to 0 to avoid Splash Text showing
+                    playIndex = 0; // Reset the pattern index to 0
+                    initPattern(level);
+                }
+            }
+        }
+        else if (prepareTime > 149 && prepareTime <= 250){ // Timer for pattern initialization/showing level
+            prepareTime--;
+            if(prepareTime == 160){
+                splashString.hide(true);
+            }
         }
 
         for (int row = 0; row < tiles.length; row++) {
@@ -205,8 +267,6 @@ public class PlayState extends State {
                 tiles[row][col].update(dt);
             }
         }
-
-
         scoreString.update(score + "",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 300);
     }
 

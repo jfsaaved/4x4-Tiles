@@ -17,6 +17,7 @@ public class Tile extends Box {
 
     private float totalWidth;
     private float totalHeight;
+
     private float timer;
     private float maxTime = 0.5f;
     private float expiration;
@@ -44,15 +45,8 @@ public class Tile extends Box {
         expiration = 0;
         if(selected == false) {
             selected = true;
-            //sound.play();
+            sound.play();
         }
-    }
-
-    public boolean isFinished(){
-        if(width == totalWidth && height == totalHeight)
-            return true;
-        else
-            return false;
     }
 
     public void updatePressed(){

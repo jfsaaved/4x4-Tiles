@@ -32,7 +32,7 @@ public class MenuState extends State {
             cam.unproject(mouse);
             if(play.contains(mouse.x,mouse.y)){
                 System.out.println("Exiting Main Menu!");
-                gsm.set(new PlayState(gsm,"pack0"));
+                gsm.set(new PlayState(gsm,"insane"));
             }
             else if(exit.contains(mouse.x,mouse.y)){
                 Gdx.app.exit();
