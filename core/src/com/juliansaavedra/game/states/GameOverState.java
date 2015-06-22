@@ -3,6 +3,7 @@ package com.juliansaavedra.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.handler.MomoPreferences;
 import com.juliansaavedra.game.ui.TextImage;
 
 /**
@@ -12,15 +13,26 @@ public class GameOverState extends State {
 
     private TextImage gameOver;
     private TextImage scoreImage;
-    private int score;
+    private TextImage hiScoreImage;
+    private int highScore;
 
-    public GameOverState(GSM gsm, int getScore){
+    public GameOverState(GSM gsm, int newScore){
         super(gsm);
 
-        score = getScore;
 
-        scoreImage = new TextImage(score+"", MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
-        gameOver = new TextImage("game over", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 100,1);
+        MomoPreferences pref = new MomoPreferences();
+
+        if(newScore > pref.getHighScore()){
+            highScore = newScore;
+            pref.setHighScore(newScore);
+        }
+        else{
+            highScore = pref.getHighScore();
+        }
+
+        hiScoreImage = new TextImage("high "+highScore, MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 100,1);
+        scoreImage = new TextImage(""+newScore, MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
+        gameOver = new TextImage("game over", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 200,1);
 
     }
 
@@ -43,6 +55,7 @@ public class GameOverState extends State {
         sb.begin();
         gameOver.render(sb);
         scoreImage.render(sb);
+        hiScoreImage.render(sb);
         sb.end();
     }
 
