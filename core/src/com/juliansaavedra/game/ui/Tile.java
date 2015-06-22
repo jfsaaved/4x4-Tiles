@@ -25,12 +25,22 @@ public class Tile extends Box {
 
     private Sound sound;
 
+    public int worth;
+    public boolean empty;
+    public boolean cdBool;
+    public float coolDown;
+
     public Tile(float x, float y, float width, float height, int num) {
 
         this.x = x;
         this.y = y;
         this.totalWidth = width - 8;
         this.totalHeight = height - 8;
+
+        worth = 1;
+        coolDown = 0;
+        empty = false;
+        cdBool = false;
 
         light = MomoGame.res.getAtlas("pack").findRegion("light");
         dark = MomoGame.res.getAtlas("pack").findRegion("dark");
@@ -41,11 +51,35 @@ public class Tile extends Box {
         timer = t;
     }
 
+    public void cdToggle(boolean b){
+        cdBool = b;
+        if(cdBool == true){
+            coolDown = 200f;
+        }
+        else{
+            coolDown = 0f;
+        }
+    }
+
+    public void cdTimer(){
+        if(coolDown > 0){
+            cdBool= true;
+            coolDown--;
+        }
+        else{
+            cdBool = false;
+        }
+    }
+
+    public boolean justSelected(){
+        return cdBool;
+    }
+
     public void playSound(){
         expiration = 0;
         if(selected == false) {
             selected = true;
-            sound.play();
+            //sound.play();
         }
     }
 
@@ -53,7 +87,7 @@ public class Tile extends Box {
         if(selected == true){
             expiration += 1;
             if(expiration > maxExpiration){
-                sound.stop();
+                //sound.stop();
                 selected = false;
             }
         }
@@ -61,6 +95,29 @@ public class Tile extends Box {
 
     public void stopSound(){
         sound.stop();
+    }
+
+    public int getPoint(){
+        int point;
+        if(empty == false){
+            point = worth;
+            return point;
+        }
+        else{
+            point = 0;
+            empty = true;
+            return point;
+        }
+    }
+
+    public void reset(){
+        if(empty == true){
+            empty = false;
+        }
+    }
+
+    public boolean isEmpty(){
+        return empty;
     }
 
     public void update(float dt) {
@@ -75,6 +132,8 @@ public class Tile extends Box {
             if(width > totalWidth) width = totalWidth;
             if(height > totalHeight) height = totalHeight;
         }
+
+        cdTimer();
         updatePressed();
     }
     public void render(SpriteBatch sb) {

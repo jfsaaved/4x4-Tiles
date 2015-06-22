@@ -11,10 +11,17 @@ import com.juliansaavedra.game.ui.TextImage;
 public class GameOverState extends State {
 
     private TextImage gameOver;
+    private TextImage scoreImage;
+    private int score;
 
-    public GameOverState(GSM gsm){
+    public GameOverState(GSM gsm, int getScore){
         super(gsm);
-        gameOver = new TextImage("game over", MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
+
+        score = getScore;
+
+        scoreImage = new TextImage(score+"", MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
+        gameOver = new TextImage("game over", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 100,1);
+
     }
 
     public void handleInput(){
@@ -35,6 +42,7 @@ public class GameOverState extends State {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         gameOver.render(sb);
+        scoreImage.render(sb);
         sb.end();
     }
 

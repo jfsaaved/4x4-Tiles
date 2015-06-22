@@ -33,11 +33,15 @@ public class PlayState extends State {
 
     private TextImage splashString;
     private TextImage scoreString;
+    private TextImage timeString;
     private int prepareTime;
     private int splash;
-    private int score = 3;
 
+    private int score = 0;
     private int level = 0;
+    private int milliseconds;
+    private int seconds;
+    private String difficulty;
 
     public PlayState(GSM gsm,String difficulty){
         super(gsm);
@@ -46,28 +50,37 @@ public class PlayState extends State {
         scoreString = new TextImage(score+"",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 300,1);
         splashString.hide(true);
 
+        this.difficulty = difficulty;
         setDifficulty(difficulty);
         loadSoundPack("pack0", false);
         createTiles();
         initPattern(level);
 
+        timeString = new TextImage(seconds+"",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 - 300,1);
+
     }
 
     public void setDifficulty(String difficulty){
+        milliseconds = 60;
         if(difficulty.equals("easy")){
-            patternTimerMax = 38f;
+            patternTimerMax = 1f;
+            seconds = 10;
         }
         else if(difficulty.equals("normal")){
-            patternTimerMax = 19f;
+            patternTimerMax = 1f;
+            seconds = 8;
         }
         else if(difficulty.equals("hard")){
-            patternTimerMax = 5f;
+            patternTimerMax = 0.1f;
+            seconds = 7;
         }
         else if(difficulty.equals("very hard")){
-            patternTimerMax = 1f;
+            patternTimerMax = 0.01f;
+            seconds = 5;
         }
         else if(difficulty.equals("insane")){
-            patternTimerMax = 0.01f;
+            patternTimerMax = 0.001f;
+            seconds = 3;
         }
         else{
             patternTimerMax = 19f;
@@ -158,47 +171,33 @@ public class PlayState extends State {
 
     public void handleInput() {
 
-        if(Gdx.input.justTouched()){
+        if (Gdx.input.isTouched()) {
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
-            for (int row = 0; row < tiles.length; row++) {
-                for (int col = 0; col < tiles[0].length; col++) {
-                    if (tiles[row][col].contains(mouse.x, mouse.y)) {
-                        if (playTime) {
-                            if (playIndex < 16) {
-                                if (tiles[row][col] == tiles[patternRow[playIndex]][patternCol[playIndex]]) {
-                                    playIndex++;
-                                    score++;
-                                } else {
-                                    score--;
-                                    if(score == -1){
-                                        gsm.set(new GameOverState(gsm));
-                                    }
-                                    splashString.update("wrong", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
-                                    splashString.hide(false);
-                                    splash = 50;
-                                }
-                            }
-                            else{
-                                playTime = false;
-                                splashString.update("complete", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
-                                splashString.hide(false);
-                                prepareTime = 350;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        else if (Gdx.input.isTouched()) {
-            mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            cam.unproject(mouse);
-
             for (int row = 0; row < tiles.length; row++) {
                 for (int col = 0; col < tiles[0].length; col++) {
                     if (tiles[row][col].contains(mouse.x, mouse.y)) {
                         tiles[row][col].playSound();
+                        if (playIndex < 16 && playTime) {
+                            if (tiles[row][col] == tiles[patternRow[playIndex]][patternCol[playIndex]]) {
+                                tiles[row][col].cdToggle(true);
+                                if (!tiles[row][col].isEmpty()) {
+                                    playIndex++;
+                                    if (playIndex == 16) {
+                                        playTime = false;
+                                        setDifficulty(difficulty);
+                                        splashString.update("complete", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+                                        splashString.hide(false);
+                                        prepareTime = 350;
+                                    }
+                                }
+                                score += tiles[row][col].getPoint();
+                            } else {
+                                if (!tiles[row][col].justSelected()) {
+                                    gsm.set(new GameOverState(gsm,score));
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -206,6 +205,19 @@ public class PlayState extends State {
     }
 
     public void update(float dt) {
+
+        if(playTime) {
+            if (seconds < 0) {
+                gsm.set(new GameOverState(gsm,score));
+            } else {
+                if (milliseconds >= 0) {
+                    milliseconds--;
+                } else {
+                    seconds--;
+                    milliseconds = 60;
+                }
+            }
+        }
 
         if(prepareTime < 150){ // Pattern initialized
             if(patternReady){
@@ -268,6 +280,9 @@ public class PlayState extends State {
             }
         }
         scoreString.update(score + "",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 300);
+        if(seconds >=0) {
+            timeString.update(seconds + "", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 300);
+        }
     }
 
     public void render(SpriteBatch sb) {
@@ -281,6 +296,7 @@ public class PlayState extends State {
         }
         splashString.render(sb);
         scoreString.render(sb);
+        timeString.render(sb);
         sb.end();
 
     }
