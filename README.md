@@ -19,7 +19,7 @@ Each tile has their own sound. These sounds are saved inside a folder inside the
 
 #### Font and Tiles
 I used [texture packer](https://code.google.com/p/libgdx-texturepacker-gui/) to package the font and tiles    
-These can be changed to anything but in the code, the default regions are:
+These can be changed to anything. In the code the default regions are:
 - **light** for the selected/hit tiles
 - **dark** for the default tiles
 - **fontsheet** for the font sprite sheet
