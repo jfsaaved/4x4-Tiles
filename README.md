@@ -7,7 +7,7 @@ The idea of the game is to show a pattern (selected from a list of patterns) to 
 ### Assets
 
 #### Patterns
-There are over 70+ patterns so far. They're all saved in a text file inside the asset folder.
+There are over 70+ patterns so far. They're all saved in a text file inside the asset folder.    
 The format for the pattern is:    
 
 > [name of level/pattern],[1st tile row],[1st tile col],[2nd tile row],[2nd tiel col],...,[16th tile row],[16th tile col];     
