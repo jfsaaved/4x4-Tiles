@@ -80,7 +80,8 @@ public class Tile extends Box {
         expiration = 0;
         if(selected == false) {
             selected = true;
-            sound.play();
+            if(MomoGame.pref.getSoundPref())
+                sound.play();
         }
     }
 
@@ -88,7 +89,8 @@ public class Tile extends Box {
         if(selected == true){
             expiration += 1;
             if(expiration > maxExpiration){
-                sound.stop();
+                if(MomoGame.pref.getSoundPref())
+                    sound.stop();
                 selected = false;
             }
         }

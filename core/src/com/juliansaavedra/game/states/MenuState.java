@@ -15,6 +15,7 @@ public class MenuState extends State {
 
     private TextImage play;
     private TextImage title;
+    private TextImage settings;
     private TextImage exit;
 
     public MenuState(GSM gsm) {
@@ -22,7 +23,8 @@ public class MenuState extends State {
 
         title = new TextImage("MOMOGAME",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 + 200 , 1);
         play = new TextImage("START",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2, 1);
-        exit = new TextImage("EXIT",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 100, 1);
+        settings = new TextImage("SETTINGS",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 100, 1);
+        exit = new TextImage("EXIT",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 200, 1);
 
     }
 
@@ -32,6 +34,9 @@ public class MenuState extends State {
             cam.unproject(mouse);
             if(play.contains(mouse.x,mouse.y)){
                 gsm.set(new DifficultyState(gsm));
+            }
+            else if(settings.contains(mouse.x,mouse.y)){
+                gsm.set(new SettingsState(gsm));
             }
             else if(exit.contains(mouse.x,mouse.y)){
                 Gdx.app.exit();
@@ -48,6 +53,7 @@ public class MenuState extends State {
         sb.begin();
         title.render(sb);
         play.render(sb);
+        settings.render(sb);
         exit.render(sb);
         sb.end();
     }

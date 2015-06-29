@@ -73,35 +73,35 @@ public class PlayState extends State {
             bonus = 0;
             minLevel = 0;
             maxLevel = 15;
-            patternTimerMax = 3f;
+            patternTimerMax = 8f;
             seconds = 8;
         }
         else if(difficulty.equals("NORMAL")){
             bonus = 0;
-            minLevel = 16;
+            minLevel = 0;
             maxLevel = 31;
-            patternTimerMax = 3f;
+            patternTimerMax = 5f;
             seconds = 5;
         }
         else if(difficulty.equals("HARD")){
             bonus = 1;
-            minLevel = 32;
+            minLevel = 0;
             maxLevel = 47;
-            patternTimerMax = 2f;
+            patternTimerMax = 4f;
             seconds = 4;
         }
         else if(difficulty.equals("VERY HARD")){
             bonus = 2;
             minLevel = 48;
             maxLevel = 80;
-            patternTimerMax = 2f;
+            patternTimerMax = 4f;
             seconds = 4;
         }
         else if(difficulty.equals("INSANE")){
             bonus = 3;
             minLevel = 48;
             maxLevel = 80;
-            patternTimerMax = 1f;
+            patternTimerMax = 3f;
             seconds = 3;
         }
         else{

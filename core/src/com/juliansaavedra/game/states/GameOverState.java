@@ -20,14 +20,13 @@ public class GameOverState extends State {
     public GameOverState(GSM gsm, int newScore){
         super(gsm);
 
-        MomoPreferences pref = new MomoPreferences();
 
-        if(newScore > pref.getHighScore()){
+        if(newScore > MomoGame.pref.getHighScore()){
             highScore = newScore;
-            pref.setHighScore(newScore);
+            MomoGame.pref.setHighScore(newScore);
         }
         else{
-            highScore = pref.getHighScore();
+            highScore = MomoGame.pref.getHighScore();
         }
 
         hiScoreImage = new TextImage("HIGHSCORE "+highScore, MomoGame.WIDTH/2 + 150,MomoGame.HEIGHT/2 - 100, 0.50f);
