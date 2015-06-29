@@ -43,6 +43,10 @@ public class PlayState extends State {
     private int seconds;
     private String difficulty;
 
+    private int maxLevel;
+    private int minLevel;
+    private int bonus;
+
     public PlayState(GSM gsm,String difficulty){
         super(gsm);
 
@@ -52,8 +56,11 @@ public class PlayState extends State {
 
         this.difficulty = difficulty;
         setDifficulty(difficulty);
-        loadSoundPack("pack1", false);
+        loadSoundPack("pack1");
         createTiles();
+
+        Random rand = new Random();
+        level = rand.nextInt(maxLevel - minLevel) + minLevel;
         initPattern(level);
 
         timeString = new TextImage(seconds+"",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 - 300,1);
@@ -63,23 +70,38 @@ public class PlayState extends State {
     public void setDifficulty(String difficulty){
         milliseconds = 60;
         if(difficulty.equals("EASY")){
-            patternTimerMax = 1f;
-            seconds = 10;
-        }
-        else if(difficulty.equals("NORMAL")){
-            patternTimerMax = 1f;
+            bonus = 0;
+            minLevel = 0;
+            maxLevel = 15;
+            patternTimerMax = 3f;
             seconds = 8;
         }
-        else if(difficulty.equals("HARD")){
-            patternTimerMax = 0.1f;
-            seconds = 7;
-        }
-        else if(difficulty.equals("VERY HARD")){
-            patternTimerMax = 0.01f;
+        else if(difficulty.equals("NORMAL")){
+            bonus = 0;
+            minLevel = 16;
+            maxLevel = 31;
+            patternTimerMax = 3f;
             seconds = 5;
         }
+        else if(difficulty.equals("HARD")){
+            bonus = 1;
+            minLevel = 32;
+            maxLevel = 47;
+            patternTimerMax = 2f;
+            seconds = 4;
+        }
+        else if(difficulty.equals("VERY HARD")){
+            bonus = 2;
+            minLevel = 48;
+            maxLevel = 80;
+            patternTimerMax = 2f;
+            seconds = 4;
+        }
         else if(difficulty.equals("INSANE")){
-            patternTimerMax = 0.001f;
+            bonus = 3;
+            minLevel = 48;
+            maxLevel = 80;
+            patternTimerMax = 1f;
             seconds = 3;
         }
         else{
@@ -99,16 +121,12 @@ public class PlayState extends State {
         prepareTime = 250;
     }
 
-    public void loadSoundPack(String name, boolean playBeat) {
-        int numSounds = 1; // 16 maximum
+    public void loadSoundPack(String name) {
+        int numSounds = 16; // 16 maximum
         for (int i = 0; i < numSounds; i++) {
             int beatIndex = i + 1;
             String fileName = name + "/sound" + beatIndex + ".wav";
             MomoGame.res.loadSound(fileName, "" + i);
-        }
-        if (playBeat) {
-            MomoGame.res.getMusic("beat").setLooping(true);
-            MomoGame.res.getMusic("beat").play();
         }
     }
 
@@ -125,7 +143,7 @@ public class PlayState extends State {
                 int animation = random.nextInt(99) + 1;
                 tiles[row][col].setTimer(-(animation) * 0.01f);
                 //tiles[row][col].setTimer((-(tiles.length - row) - col) * 0.25f);
-                //soundNum++;
+                soundNum++;
             }
         }
     }
@@ -135,7 +153,7 @@ public class PlayState extends State {
         FileHandle file = Gdx.files.internal("music.txt");
         String text = file.readString();
         patternPacks = text.split(";");
-        System.out.println(patternPacks[pack]);
+        //System.out.println(patternPacks[pack]);
     }
 
     /*Parse the String obtained from getPatterns method to get individual row and col index*/
@@ -192,7 +210,7 @@ public class PlayState extends State {
                                         prepareTime = 350;
                                     }
                                 }
-                                score += tiles[row][col].getPoint();
+                                score += tiles[row][col].getPoint() + bonus;
                             } else {
                                 if (!tiles[row][col].justSelected()) {
                                     gsm.set(new GameOverState(gsm,score));
@@ -256,12 +274,8 @@ public class PlayState extends State {
         else if(prepareTime > 250 && prepareTime <= 350){ // A level is completed
             prepareTime--;
             if(prepareTime == 260){
-                if(level < 3) {
-                    level++;
-                }
-                else{
-                    level = 0;
-                }
+                Random rand = new Random();
+                level = rand.nextInt(maxLevel - minLevel) + minLevel;
                 splashString.hide(true);
                 splash = 0; // Reset from -1 to 0 to avoid Splash Text showing
                 playIndex = 0; // Reset the pattern index to 0

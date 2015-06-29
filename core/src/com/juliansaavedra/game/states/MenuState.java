@@ -2,6 +2,7 @@ package com.juliansaavedra.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.juliansaavedra.game.MomoGame;
 import com.juliansaavedra.game.ui.TextImage;
@@ -22,12 +23,6 @@ public class MenuState extends State {
         title = new TextImage("MOMOGAME",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 + 200 , 1);
         play = new TextImage("START",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2, 1);
         exit = new TextImage("EXIT",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 100, 1);
-
-        String text = " ABC";
-        char c = text.charAt(0);
-        int index = (int) c;
-        System.out.println(index);
-
 
     }
 

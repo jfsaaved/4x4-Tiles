@@ -26,11 +26,20 @@ public class MomoGame extends ApplicationAdapter {
 
         res = new Content();
         res.loadAtlas("pack2.pack","pack");
+        loadMusicPack("music0");
 
         sb = new SpriteBatch();
         gsm = new GSM();
         gsm.push(new MenuState(gsm));
 	}
+
+    public void loadMusicPack(String name) {
+        for(int i = 0 ; i < 8 ; i++){
+            int musicIndex = i + 1;
+            String fileName = name + "/music" + musicIndex + ".wav";
+            res.loadMusic(fileName,"m"+i);
+        }
+    }
 
 	@Override
 	public void render () {

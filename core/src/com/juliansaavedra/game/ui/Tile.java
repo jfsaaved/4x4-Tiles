@@ -1,6 +1,7 @@
 package com.juliansaavedra.game.ui;
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.juliansaavedra.game.MomoGame;
@@ -51,17 +52,17 @@ public class Tile extends Box {
         timer = t;
     }
 
-    public void cdToggle(boolean b){
+    public void cdToggle(boolean b){ // Avoid repeating hits w/ isTouched
         cdBool = b;
         if(cdBool == true){
-            coolDown = 200f;
+            coolDown = 1000f; // Arbitrary large number bigger than the count down timer
         }
         else{
             coolDown = 0f;
         }
     }
 
-    public void cdTimer(){
+    public void cdTimer(){ // Reset the cool down
         if(coolDown > 0){
             cdBool= true;
             coolDown--;
@@ -79,7 +80,7 @@ public class Tile extends Box {
         expiration = 0;
         if(selected == false) {
             selected = true;
-            //sound.play();
+            sound.play();
         }
     }
 
@@ -87,9 +88,12 @@ public class Tile extends Box {
         if(selected == true){
             expiration += 1;
             if(expiration > maxExpiration){
-                //sound.stop();
+                sound.stop();
                 selected = false;
             }
+        }
+        else{
+            coolDown = 0;
         }
     }
 

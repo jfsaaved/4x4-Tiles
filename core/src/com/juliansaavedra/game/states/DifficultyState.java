@@ -1,6 +1,7 @@
 package com.juliansaavedra.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.juliansaavedra.game.MomoGame;
