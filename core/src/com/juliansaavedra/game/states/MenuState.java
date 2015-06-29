@@ -19,9 +19,15 @@ public class MenuState extends State {
     public MenuState(GSM gsm) {
         super(gsm);
 
-        title = new TextImage("momo",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 + 200 , 1);
-        play = new TextImage("play",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2, 1);
-        exit = new TextImage("exit",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 100, 1);
+        title = new TextImage("MOMOGAME",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 + 200 , 1);
+        play = new TextImage("START",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2, 1);
+        exit = new TextImage("EXIT",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 100, 1);
+
+        String text = " ABC";
+        char c = text.charAt(0);
+        int index = (int) c;
+        System.out.println(index);
+
 
     }
 

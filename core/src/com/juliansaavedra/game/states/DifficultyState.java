@@ -12,7 +12,7 @@ import com.juliansaavedra.game.ui.TextImage;
 public class DifficultyState extends State {
 
     private Array<TextImage> difficulties;
-    private String[] text = {"easy","normal","hard","very hard","insane"};
+    private String[] text = {"EASY","NORMAL","HARD","VERY HARD","INSANE"};
 
    public DifficultyState(GSM gsm){
        super(gsm);

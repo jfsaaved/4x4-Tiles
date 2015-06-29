@@ -30,9 +30,9 @@ public class GameOverState extends State {
             highScore = pref.getHighScore();
         }
 
-        hiScoreImage = new TextImage("high "+highScore, MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 100,1);
+        hiScoreImage = new TextImage("HIGHSCORE "+highScore, MomoGame.WIDTH/2 + 150,MomoGame.HEIGHT/2 - 100, 0.50f);
         scoreImage = new TextImage(""+newScore, MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
-        gameOver = new TextImage("game over", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 200,1);
+        gameOver = new TextImage("GAME OVER", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 100,1);
 
     }
 

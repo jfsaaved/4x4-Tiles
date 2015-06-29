@@ -46,13 +46,13 @@ public class PlayState extends State {
     public PlayState(GSM gsm,String difficulty){
         super(gsm);
 
-        splashString = new TextImage("ready",MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
+        splashString = new TextImage("READY",MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
         scoreString = new TextImage(score+"",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 300,1);
         splashString.hide(true);
 
         this.difficulty = difficulty;
         setDifficulty(difficulty);
-        loadSoundPack("pack0", false);
+        loadSoundPack("pack1", false);
         createTiles();
         initPattern(level);
 
@@ -62,23 +62,23 @@ public class PlayState extends State {
 
     public void setDifficulty(String difficulty){
         milliseconds = 60;
-        if(difficulty.equals("easy")){
+        if(difficulty.equals("EASY")){
             patternTimerMax = 1f;
             seconds = 10;
         }
-        else if(difficulty.equals("normal")){
+        else if(difficulty.equals("NORMAL")){
             patternTimerMax = 1f;
             seconds = 8;
         }
-        else if(difficulty.equals("hard")){
+        else if(difficulty.equals("HARD")){
             patternTimerMax = 0.1f;
             seconds = 7;
         }
-        else if(difficulty.equals("very hard")){
+        else if(difficulty.equals("VERY HARD")){
             patternTimerMax = 0.01f;
             seconds = 5;
         }
-        else if(difficulty.equals("insane")){
+        else if(difficulty.equals("INSANE")){
             patternTimerMax = 0.001f;
             seconds = 3;
         }
@@ -100,7 +100,8 @@ public class PlayState extends State {
     }
 
     public void loadSoundPack(String name, boolean playBeat) {
-        for (int i = 0; i < 16; i++) {
+        int numSounds = 1; // 16 maximum
+        for (int i = 0; i < numSounds; i++) {
             int beatIndex = i + 1;
             String fileName = name + "/sound" + beatIndex + ".wav";
             MomoGame.res.loadSound(fileName, "" + i);
@@ -124,7 +125,7 @@ public class PlayState extends State {
                 int animation = random.nextInt(99) + 1;
                 tiles[row][col].setTimer(-(animation) * 0.01f);
                 //tiles[row][col].setTimer((-(tiles.length - row) - col) * 0.25f);
-                soundNum++;
+                //soundNum++;
             }
         }
     }
@@ -186,7 +187,7 @@ public class PlayState extends State {
                                     if (playIndex == 16) {
                                         playTime = false;
                                         setDifficulty(difficulty);
-                                        splashString.update("complete", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+                                        splashString.update("COMPLETE!", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
                                         splashString.hide(false);
                                         prepareTime = 350;
                                     }
@@ -226,7 +227,7 @@ public class PlayState extends State {
             }
             else{
                 if(prepareTime > 50){
-                    splashString.update("ready",MomoGame.WIDTH/2,MomoGame.HEIGHT/2);
+                    splashString.update("READY",MomoGame.WIDTH/2,MomoGame.HEIGHT/2);
                     splashString.hide(false);
                     prepareTime--;
                 }
@@ -236,7 +237,7 @@ public class PlayState extends State {
                         prepareTime = 0;
                     }
                     else {
-                        splashString.update("go", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+                        splashString.update("GO!", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
                         splashString.hide(false);
                         prepareTime--;
                     }

@@ -12,16 +12,16 @@ public class TextImage extends Box {
 
     private TextureRegion[][] fontSheet;
     private String text;
-    private int showSize;
+    private float showSize;
     private boolean hideIt = false;
 
-    public TextImage(String text, float x, float y, int showSize){
+    public TextImage(String text, float x, float y, float showSize){
         this.text = text;
         this.x = x;
         this.y = y;
         this.showSize = showSize;
 
-        int size = 50;
+        int size = 45;
         width = size * text.length();
         height = size;
 
@@ -42,13 +42,12 @@ public class TextImage extends Box {
         if(hideIt == false) {
             for (int i = 0; i < text.length(); i++) {
                 char c = text.charAt(i);
-                c -= 'a';
-                int index = (int) c;
-                if(index >= 65487) index -= 65460;
-                else if(index == 65471) index -= 65445;
+                int index;
+                index = c - 32;
+
                 int row = index / fontSheet[0].length;
                 int col = index % fontSheet[0].length;
-                sb.draw(fontSheet[row][col], x - width / 2 + 50 * i, y - height / 2, showSize * 50, showSize * 50);
+                sb.draw(fontSheet[row][col], x - width / 2 + (45 * showSize) * i, y - height / 2, 45 * showSize, 45 * showSize);
             }
         }
     }
@@ -62,7 +61,7 @@ public class TextImage extends Box {
         this.x = x;
         this.y = y;
 
-        int size = 50;
+        int size = 45;
         width = size * text.length();
         height = size;
     }

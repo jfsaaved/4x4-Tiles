@@ -25,7 +25,7 @@ public class MomoGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f,1);
 
         res = new Content();
-        res.loadAtlas("pack.pack","pack");
+        res.loadAtlas("pack2.pack","pack");
 
         sb = new SpriteBatch();
         gsm = new GSM();
