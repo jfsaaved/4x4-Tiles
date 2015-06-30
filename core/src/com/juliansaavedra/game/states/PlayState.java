@@ -47,6 +47,8 @@ public class PlayState extends State {
     private int minLevel;
     private int bonus;
 
+    private Tile letTileFinish;
+
     public PlayState(GSM gsm,String difficulty){
         super(gsm);
 
@@ -56,7 +58,14 @@ public class PlayState extends State {
 
         this.difficulty = difficulty;
         setDifficulty(difficulty);
-        loadSoundPack("pack1");
+
+        if(MomoGame.pref.getPackPref()){
+            loadSoundPack("pack0");
+        }
+        else{
+            loadSoundPack("pack1");
+        }
+
         createTiles();
 
         Random rand = new Random();
@@ -150,7 +159,7 @@ public class PlayState extends State {
 
     /*Parse the music.txt file to get all the patterns*/
     public void getPatterns(int pack){
-        FileHandle file = Gdx.files.internal("music.txt");
+        FileHandle file = Gdx.files.internal("patterns.txt");
         String text = file.readString();
         patternPacks = text.split(";");
         //System.out.println(patternPacks[pack]);
@@ -182,6 +191,9 @@ public class PlayState extends State {
             if (patternIndex < patternRow.length - 1) {
                 patternTimer = 0;
                 patternIndex++;
+                if(patternIndex == patternRow.length - 1){
+                    letTileFinish = tiles[patternRow[patternIndex]][patternCol[patternIndex]];
+                }
             } else {
                 patternReady = false;
             }
@@ -201,19 +213,24 @@ public class PlayState extends State {
                             if (tiles[row][col] == tiles[patternRow[playIndex]][patternCol[playIndex]]) {
                                 tiles[row][col].cdToggle(true);
                                 if (!tiles[row][col].isEmpty()) {
+
                                     playIndex++;
+
                                     if (playIndex == 16) {
+                                        letTileFinish = tiles[row][col];
                                         playTime = false;
                                         setDifficulty(difficulty);
                                         splashString.update("COMPLETE!", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
                                         splashString.hide(false);
                                         prepareTime = 350;
                                     }
+
                                 }
                                 score += tiles[row][col].getPoint() + bonus;
-                            } else {
+                            }
+                            else {
                                 if (!tiles[row][col].justSelected()) {
-                                    gsm.set(new GameOverState(gsm,score));
+                                    gsm.set(new GameOverState(gsm,score,difficulty));
                                 }
                             }
                         }
@@ -227,7 +244,7 @@ public class PlayState extends State {
 
         if(playTime) {
             if (seconds < 0) {
-                gsm.set(new GameOverState(gsm,score));
+                gsm.set(new GameOverState(gsm,score,difficulty));
             } else {
                 if (milliseconds >= 0) {
                     milliseconds--;
@@ -245,6 +262,7 @@ public class PlayState extends State {
             }
             else{
                 if(prepareTime > 50){
+                    letTileFinish.playSound();
                     splashString.update("READY",MomoGame.WIDTH/2,MomoGame.HEIGHT/2);
                     splashString.hide(false);
                     prepareTime--;
@@ -273,6 +291,9 @@ public class PlayState extends State {
         }
         else if(prepareTime > 250 && prepareTime <= 350){ // A level is completed
             prepareTime--;
+            if(prepareTime > 260){
+                letTileFinish.playSound();
+            }
             if(prepareTime == 260){
                 Random rand = new Random();
                 level = rand.nextInt(maxLevel - minLevel) + minLevel;

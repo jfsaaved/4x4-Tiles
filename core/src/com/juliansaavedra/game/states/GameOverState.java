@@ -15,11 +15,17 @@ public class GameOverState extends State {
     private TextImage gameOver;
     private TextImage scoreImage;
     private TextImage hiScoreImage;
+
+    private TextImage retryText;
+    private TextImage backText;
+
+    private String difficulty;
     private int highScore;
 
-    public GameOverState(GSM gsm, int newScore){
+    public GameOverState(GSM gsm, int newScore, String level){
         super(gsm);
 
+        difficulty = level;
 
         if(newScore > MomoGame.pref.getHighScore()){
             highScore = newScore;
@@ -29,18 +35,27 @@ public class GameOverState extends State {
             highScore = MomoGame.pref.getHighScore();
         }
 
-        hiScoreImage = new TextImage("HIGHSCORE "+highScore, MomoGame.WIDTH/2 + 150,MomoGame.HEIGHT/2 - 100, 0.50f);
-        scoreImage = new TextImage(""+newScore, MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
         gameOver = new TextImage("GAME OVER", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 100,1);
+        scoreImage = new TextImage(""+newScore, MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
+        hiScoreImage = new TextImage("HIGHSCORE "+highScore, MomoGame.WIDTH/2 + 150,MomoGame.HEIGHT/2 - 100, 0.50f);
+
+
+        retryText = new TextImage("RETRY", MomoGame.WIDTH/2, MomoGame.HEIGHT/2 - 200, 1);
+        backText = new TextImage("MAIN MENU", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 - 300, 1);
 
     }
 
     public void handleInput(){
         if(Gdx.input.justTouched()){
-            //mouse.set(Gdx.input.getX(),Gdx.input.getY(),0);
-            //cam.unproject(mouse);
+            mouse.set(Gdx.input.getX(),Gdx.input.getY(),0);
+            cam.unproject(mouse);
 
-            gsm.set(new MenuState(gsm));
+            if(retryText.contains(mouse.x,mouse.y)){
+                gsm.set(new PlayState(gsm,difficulty));
+            }
+            else if(backText.contains(mouse.x,mouse.y)){
+                gsm.set(new MenuState(gsm));
+            }
 
         }
     }
@@ -55,6 +70,8 @@ public class GameOverState extends State {
         gameOver.render(sb);
         scoreImage.render(sb);
         hiScoreImage.render(sb);
+        retryText.render(sb);
+        backText.render(sb);
         sb.end();
     }
 

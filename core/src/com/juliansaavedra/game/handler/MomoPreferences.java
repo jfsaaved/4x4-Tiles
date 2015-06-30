@@ -14,6 +14,15 @@ public class MomoPreferences {
         prefs = Gdx.app.getPreferences("save");
     }
 
+    public void setPackPref(boolean b){
+        prefs.putBoolean("Sound Pack", b);
+        prefs.flush();
+    }
+
+    public boolean getPackPref(){
+        return prefs.getBoolean("Sound Pack");
+    }
+
     public void setSoundPref(boolean b){
         prefs.putBoolean("Sound",b);
         prefs.flush();
