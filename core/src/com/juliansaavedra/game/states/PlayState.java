@@ -81,14 +81,14 @@ public class PlayState extends State {
         if(difficulty.equals("EASY")){
             bonus = 0;
             minLevel = 0;
-            maxLevel = 15;
+            maxLevel = 47;
             patternTimerMax = 8f;
             seconds = 8;
         }
         else if(difficulty.equals("NORMAL")){
             bonus = 0;
             minLevel = 0;
-            maxLevel = 31;
+            maxLevel = 47;
             patternTimerMax = 5f;
             seconds = 5;
         }

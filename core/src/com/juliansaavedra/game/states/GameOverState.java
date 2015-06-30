@@ -35,13 +35,11 @@ public class GameOverState extends State {
             highScore = MomoGame.pref.getHighScore();
         }
 
-        gameOver = new TextImage("GAME OVER", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 100,1);
-        scoreImage = new TextImage(""+newScore, MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
-        hiScoreImage = new TextImage("HIGHSCORE "+highScore, MomoGame.WIDTH/2 + 150,MomoGame.HEIGHT/2 - 100, 0.50f);
-
-
-        retryText = new TextImage("RETRY", MomoGame.WIDTH/2, MomoGame.HEIGHT/2 - 200, 1);
-        backText = new TextImage("MAIN MENU", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 - 300, 1);
+        gameOver = new TextImage("GAME OVER", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 200,1);
+        scoreImage = new TextImage(""+newScore, MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 100,1);
+        hiScoreImage = new TextImage("HIGHSCORE "+highScore, MomoGame.WIDTH/2 + 150,MomoGame.HEIGHT/2, 0.50f);
+        retryText = new TextImage("RETRY", MomoGame.WIDTH/2, MomoGame.HEIGHT/2 - 100, 1);
+        backText = new TextImage("MAIN MENU", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 - 200, 1);
 
     }
 
