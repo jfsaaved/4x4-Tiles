@@ -28,6 +28,7 @@ public class MomoGame extends ApplicationAdapter {
 
         res = new Content();
         res.loadAtlas("pack2.pack","pack");
+        res.loadTexture("background.png","bg");
         //loadMusicPack("music0");
         pref = new MomoPreferences();
 

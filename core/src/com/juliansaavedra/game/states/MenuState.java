@@ -3,6 +3,7 @@ package com.juliansaavedra.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.juliansaavedra.game.MomoGame;
 import com.juliansaavedra.game.ui.TextImage;
@@ -18,6 +19,10 @@ public class MenuState extends State {
     private TextImage settings;
     private TextImage exit;
 
+    private Texture background;
+    private int currentBGX = 1920;
+    private float timer = 1;
+
     public MenuState(GSM gsm) {
         super(gsm);
 
@@ -25,6 +30,8 @@ public class MenuState extends State {
         play = new TextImage("START",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2, 1);
         settings = new TextImage("SETTINGS",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 100, 1);
         exit = new TextImage("EXIT",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 200, 1);
+
+        background = MomoGame.res.getTexture("bg");
 
     }
 
@@ -45,12 +52,29 @@ public class MenuState extends State {
     }
 
     public void update(float dt) {
+
         handleInput();
+
+        if(timer > 0){
+            timer--;
+        }
+        else if(timer <= 0){
+            timer = 1;
+            currentBGX--;
+            if(currentBGX <= 0){
+                currentBGX = 1920;
+            }
+        }
+
     }
 
     public void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
+
+        sb.draw(background,currentBGX - 1920,0);
+        sb.draw(background,currentBGX,0);
+
         title.render(sb);
         play.render(sb);
         settings.render(sb);

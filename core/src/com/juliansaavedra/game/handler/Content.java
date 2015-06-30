@@ -3,6 +3,7 @@ package com.juliansaavedra.game.handler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 public class Content {
 
     private HashMap<String, TextureAtlas> atlases;
+    private HashMap<String, Texture> textures;
     private HashMap<String, Sound> sounds;
     private HashMap<String, Music> musics;
 
@@ -20,6 +22,15 @@ public class Content {
         atlases = new HashMap<String, TextureAtlas>();
         sounds = new HashMap<String, Sound>();
         musics = new HashMap<String, Music>();
+        textures = new HashMap<String, Texture>();
+    }
+
+    public void loadTexture(String path, String key){
+        textures.put(key, new Texture(Gdx.files.internal(path)));
+    }
+
+    public Texture getTexture(String key){
+        return textures.get(key);
     }
 
     public void loadAtlas(String path, String key) {
