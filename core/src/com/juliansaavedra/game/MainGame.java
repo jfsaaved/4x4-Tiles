@@ -5,19 +5,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.juliansaavedra.game.handler.Content;
-import com.juliansaavedra.game.handler.MomoPreferences;
+import com.juliansaavedra.game.handler.MainPreferences;
 import com.juliansaavedra.game.states.GSM;
 import com.juliansaavedra.game.states.MenuState;
-import com.juliansaavedra.game.states.PlayState;
 
-public class MomoGame extends ApplicationAdapter {
+public class MainGame extends ApplicationAdapter {
 
     public static final String TITLE = "Momo";
     public static final int WIDTH = 480;
     public static final int HEIGHT = 800;
 
     public static Content res;
-    public static MomoPreferences pref;
+    public static MainPreferences pref;
 
     private GSM gsm;
     private SpriteBatch sb;
@@ -30,7 +29,7 @@ public class MomoGame extends ApplicationAdapter {
         res.loadAtlas("pack2.pack","pack");
         res.loadTexture("background.png","bg");
         //loadMusicPack("music0");
-        pref = new MomoPreferences();
+        pref = new MainPreferences();
 
         sb = new SpriteBatch();
         gsm = new GSM();

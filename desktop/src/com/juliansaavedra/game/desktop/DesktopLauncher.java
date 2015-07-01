@@ -2,16 +2,16 @@ package com.juliansaavedra.game.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.MainGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = MomoGame.WIDTH;
-        config.height = MomoGame.HEIGHT;
-        config.title = MomoGame.TITLE;
+        config.width = MainGame.WIDTH;
+        config.height = MainGame.HEIGHT;
+        config.title = MainGame.TITLE;
 
 
-		new LwjglApplication(new MomoGame(), config);
+		new LwjglApplication(new MainGame(), config);
 	}
 }

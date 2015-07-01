@@ -3,7 +3,7 @@ package com.juliansaavedra.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.MainGame;
 import com.juliansaavedra.game.ui.TextImage;
 import com.juliansaavedra.game.ui.Tile;
 
@@ -57,14 +57,14 @@ public class PlayState extends State {
     public PlayState(GSM gsm,String difficulty){
         super(gsm);
 
-        splashString = new TextImage("READY",MomoGame.WIDTH/2,MomoGame.HEIGHT/2,1);
-        scoreString = new TextImage(score+"",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 300,1);
+        splashString = new TextImage("READY", MainGame.WIDTH/2, MainGame.HEIGHT/2,1);
+        scoreString = new TextImage(score+"", MainGame.WIDTH/2, MainGame.HEIGHT/2 + 300,1);
         splashString.hide(true);
 
         this.difficulty = difficulty;
         setDifficulty(difficulty);
 
-        if(MomoGame.pref.getPackPref()){
+        if(MainGame.pref.getPackPref()){
             loadSoundPack("pack0");
         }
         else{
@@ -77,7 +77,7 @@ public class PlayState extends State {
         level = rand.nextInt(maxLevel - minLevel) + minLevel;
         initPattern(level);
 
-        timeString = new TextImage(seconds+"",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 - 300,1);
+        timeString = new TextImage(seconds+"", MainGame.WIDTH/2, MainGame.HEIGHT/2 - 300,1);
 
     }
 
@@ -130,7 +130,7 @@ public class PlayState extends State {
         patternIndex = 0;
         patternTimer = 0;
 
-        splashString.update(patternLevel, MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+        splashString.update(patternLevel, MainGame.WIDTH / 2, MainGame.HEIGHT / 2);
         splashString.hide(false);
         prepareTime = 250;
     }
@@ -140,14 +140,14 @@ public class PlayState extends State {
         for (int i = 0; i < numSounds; i++) {
             int beatIndex = i + 1;
             String fileName = name + "/sound" + beatIndex + ".wav";
-            MomoGame.res.loadSound(fileName, "" + i);
+            MainGame.res.loadSound(fileName, "" + i);
         }
     }
 
     public void createTiles(){
         tiles = new Tile[4][4];
-        int tileSize = MomoGame.WIDTH / tiles[0].length;
-        float boardOffset = (MomoGame.HEIGHT - (tileSize * tiles.length)) / 2;
+        int tileSize = MainGame.WIDTH / tiles[0].length;
+        float boardOffset = (MainGame.HEIGHT - (tileSize * tiles.length)) / 2;
 
         int soundNum = 0;
         for(int row = 0 ; row < tiles.length ; row ++){
@@ -226,7 +226,7 @@ public class PlayState extends State {
                                         letTileFinish = tiles[row][col];
                                         playTime = false;
                                         setDifficulty(difficulty);
-                                        splashString.update("COMPLETE!", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+                                        splashString.update("COMPLETE!", MainGame.WIDTH / 2, MainGame.HEIGHT / 2);
                                         splashString.hide(false);
                                         prepareTime = 350;
                                     }
@@ -262,7 +262,7 @@ public class PlayState extends State {
         }
 
         if(timeUp){
-            splashString.update("TIME'S UP",MomoGame.WIDTH/2,MomoGame.HEIGHT/2);
+            splashString.update("TIME'S UP", MainGame.WIDTH/2, MainGame.HEIGHT/2);
             splashString.hide(false);
             gameOverTicks--;
             if(gameOverTicks <= 0){
@@ -293,14 +293,14 @@ public class PlayState extends State {
             else{
                 if(prepareTime > 50){
                     letTileFinish.playSound();
-                    splashString.update("READY",MomoGame.WIDTH/2,MomoGame.HEIGHT/2);
+                    splashString.update("READY", MainGame.WIDTH/2, MainGame.HEIGHT/2);
                     splashString.hide(false);
                     prepareTime--;
                 }
                 else if(prepareTime <= 50 && prepareTime > 0){
                     if(!hitWrongTile) {
                         playTime = true;
-                        splashString.update("GO!", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
+                        splashString.update("GO!", MainGame.WIDTH / 2, MainGame.HEIGHT / 2);
                         splashString.hide(false);
                         prepareTime--;
                     }
@@ -345,9 +345,9 @@ public class PlayState extends State {
                 tiles[row][col].update(dt);
             }
         }
-        scoreString.update(score + "",MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 300);
+        scoreString.update(score + "", MainGame.WIDTH/2, MainGame.HEIGHT/2 + 300);
         if(seconds >=0) {
-            timeString.update(seconds + "", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 300);
+            timeString.update(seconds + "", MainGame.WIDTH / 2, MainGame.HEIGHT / 2 - 300);
         }
     }
 

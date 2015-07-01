@@ -2,7 +2,7 @@ package com.juliansaavedra.game.states;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.MainGame;
 
 /**
  * Created by 343076 on 27/05/2015.
@@ -18,7 +18,7 @@ public abstract class State {
 
         this.gsm = gsm;
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, MomoGame.WIDTH, MomoGame.HEIGHT);
+        cam.setToOrtho(false, MainGame.WIDTH, MainGame.HEIGHT);
         mouse = new Vector3();
 
     }

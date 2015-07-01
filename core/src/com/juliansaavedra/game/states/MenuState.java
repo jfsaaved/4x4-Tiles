@@ -1,13 +1,10 @@
 package com.juliansaavedra.game.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.MainGame;
 import com.juliansaavedra.game.ui.TextImage;
-import com.juliansaavedra.game.ui.Tile;
 
 /**
  * Created by 343076 on 11/06/2015.
@@ -26,12 +23,12 @@ public class MenuState extends State {
     public MenuState(GSM gsm) {
         super(gsm);
 
-        title = new TextImage("MOMOGAME",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 + 200 , 1);
-        play = new TextImage("START",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2, 1);
-        settings = new TextImage("SETTINGS",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 100, 1);
-        exit = new TextImage("EXIT",MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 - 200, 1);
+        title = new TextImage("QUICK SHOW", MainGame.WIDTH / 2, MainGame.HEIGHT / 2 + 200 , 1);
+        play = new TextImage("START", MainGame.WIDTH / 2, MainGame.HEIGHT / 2, 1);
+        settings = new TextImage("SETTINGS", MainGame.WIDTH / 2, MainGame.HEIGHT / 2 - 100, 1);
+        exit = new TextImage("EXIT", MainGame.WIDTH / 2, MainGame.HEIGHT / 2 - 200, 1);
 
-        background = MomoGame.res.getTexture("bg");
+        background = MainGame.res.getTexture("bg");
 
     }
 

@@ -1,10 +1,9 @@
 package com.juliansaavedra.game.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.MainGame;
 import com.juliansaavedra.game.ui.TextImage;
 
 /**
@@ -21,7 +20,7 @@ public class DifficultyState extends State {
        int position = 200;
        difficulties = new Array<TextImage>();
        for(int i = 0 ; i < text.length ; i++){
-           difficulties.add(new TextImage(text[i], MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2 + position, 1));
+           difficulties.add(new TextImage(text[i], MainGame.WIDTH / 2, MainGame.HEIGHT / 2 + position, 1));
            position = position - 100;
        }
 

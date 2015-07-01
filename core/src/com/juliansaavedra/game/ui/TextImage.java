@@ -2,7 +2,7 @@ package com.juliansaavedra.game.ui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.MainGame;
 
 /**
  * Created by 343076 on 17/06/2015.
@@ -25,7 +25,7 @@ public class TextImage extends Box {
         width = size * text.length();
         height = size;
 
-        TextureRegion sheet = MomoGame.res.getAtlas("pack").findRegion("fontsheet");
+        TextureRegion sheet = MainGame.res.getAtlas("pack").findRegion("fontsheet");
         int numCols = sheet.getRegionWidth() / size;
         int numRows = sheet.getRegionHeight() / size;
         fontSheet = new TextureRegion[numRows][numCols];

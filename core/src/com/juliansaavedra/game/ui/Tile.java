@@ -1,10 +1,9 @@
 package com.juliansaavedra.game.ui;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.MainGame;
 
 /**
  * Created by 343076 on 27/05/2015.
@@ -46,10 +45,10 @@ public class Tile extends Box {
         cdBool = false;
         isWrong = false;
 
-        light = MomoGame.res.getAtlas("pack").findRegion("light");
-        dark = MomoGame.res.getAtlas("pack").findRegion("dark");
-        wrong = MomoGame.res.getAtlas("pack").findRegion("wrong");
-        sound = MomoGame.res.getSound(Integer.toString(num));
+        light = MainGame.res.getAtlas("pack").findRegion("light");
+        dark = MainGame.res.getAtlas("pack").findRegion("dark");
+        wrong = MainGame.res.getAtlas("pack").findRegion("wrong");
+        sound = MainGame.res.getSound(Integer.toString(num));
     }
 
     public void setTimer(float t){
@@ -84,7 +83,7 @@ public class Tile extends Box {
         expiration = 0;
         if(selected == false) {
             selected = true;
-            if(MomoGame.pref.getSoundPref()) {
+            if(MainGame.pref.getSoundPref()) {
                 sound.play();
             }
         }
@@ -98,7 +97,7 @@ public class Tile extends Box {
         if(selected == true){
             expiration += 1;
             if(expiration > maxExpiration){
-                if(MomoGame.pref.getSoundPref())
+                if(MainGame.pref.getSoundPref())
                     sound.stop();
                 selected = false;
             }

@@ -6,11 +6,11 @@ import com.badlogic.gdx.Preferences;
 /**
  * Created by 343076 on 22/06/2015.
  */
-public class MomoPreferences {
+public class MainPreferences {
 
     private Preferences prefs;
 
-    public MomoPreferences(){
+    public MainPreferences(){
         prefs = Gdx.app.getPreferences("save");
     }
 

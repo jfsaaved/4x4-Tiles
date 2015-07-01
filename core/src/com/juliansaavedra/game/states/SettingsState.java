@@ -1,9 +1,8 @@
 package com.juliansaavedra.game.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.juliansaavedra.game.MomoGame;
+import com.juliansaavedra.game.MainGame;
 import com.juliansaavedra.game.ui.TextImage;
 
 /**
@@ -23,27 +22,27 @@ public class SettingsState extends State {
     public SettingsState(GSM gsm){
         super(gsm);
 
-        if(!MomoGame.pref.getSoundPref()){
+        if(!MainGame.pref.getSoundPref()){
             soundToggle = "OFF";
         }
         else{
             soundToggle = "ON";
         }
 
-        if(!MomoGame.pref.getPackPref()){
+        if(!MainGame.pref.getPackPref()){
             soundPackToggle = "TYPE2";
         }
         else{
             soundPackToggle = "TYPE1";
         }
 
-        sounds = new TextImage("SOUNDS", MomoGame.WIDTH/2 - 100,MomoGame.HEIGHT/2,1);
-        soundsToggleText = new TextImage(soundToggle, MomoGame.WIDTH/2 + 150, MomoGame.HEIGHT/2 - 50,1);
+        sounds = new TextImage("SOUNDS", MainGame.WIDTH/2 - 100, MainGame.HEIGHT/2,1);
+        soundsToggleText = new TextImage(soundToggle, MainGame.WIDTH/2 + 150, MainGame.HEIGHT/2 - 50,1);
 
-        soundPack = new TextImage("SOUNDPACK", MomoGame.WIDTH/2 - 35, MomoGame.HEIGHT/2 + 200,1);
-        soundPackToggleText = new TextImage(soundPackToggle,MomoGame.WIDTH/2 + 125, MomoGame.HEIGHT/2 + 150,1);
+        soundPack = new TextImage("SOUNDPACK", MainGame.WIDTH/2 - 35, MainGame.HEIGHT/2 + 200,1);
+        soundPackToggleText = new TextImage(soundPackToggle, MainGame.WIDTH/2 + 125, MainGame.HEIGHT/2 + 150,1);
 
-        back = new TextImage("BACK",MomoGame.WIDTH/2, MomoGame.HEIGHT/2 - 200,1);
+        back = new TextImage("BACK", MainGame.WIDTH/2, MainGame.HEIGHT/2 - 200,1);
 
     }
 
@@ -56,27 +55,27 @@ public class SettingsState extends State {
             if(soundsToggleText.contains(mouse.x,mouse.y)){
                 if(soundToggle.equals("ON")) {
                     soundToggle = "OFF";
-                    MomoGame.pref.setSoundPref(false);
-                    soundsToggleText.update("OFF", MomoGame.WIDTH / 2 + 150, MomoGame.HEIGHT / 2 - 50);
+                    MainGame.pref.setSoundPref(false);
+                    soundsToggleText.update("OFF", MainGame.WIDTH / 2 + 150, MainGame.HEIGHT / 2 - 50);
                 }
                 else{
                     soundToggle = "ON";
-                    MomoGame.pref.setSoundPref(true);
-                    soundsToggleText.update("ON", MomoGame.WIDTH / 2 + 150, MomoGame.HEIGHT / 2 - 50);
+                    MainGame.pref.setSoundPref(true);
+                    soundsToggleText.update("ON", MainGame.WIDTH / 2 + 150, MainGame.HEIGHT / 2 - 50);
                 }
             }
 
             else if(soundPackToggleText.contains(mouse.x,mouse.y)){
                 if(soundPackToggle.equals("TYPE1")){
                     soundPackToggle = "TYPE2";
-                    MomoGame.pref.setPackPref(false);
-                    soundPackToggleText.update("TYPE2",MomoGame.WIDTH/2 + 125, MomoGame.HEIGHT/2 + 150);
+                    MainGame.pref.setPackPref(false);
+                    soundPackToggleText.update("TYPE2", MainGame.WIDTH/2 + 125, MainGame.HEIGHT/2 + 150);
                 }
                 else{
                     soundPackToggle = "TYPE1";
 
-                    MomoGame.pref.setPackPref(true);
-                    soundPackToggleText.update("TYPE1",MomoGame.WIDTH/2 + 125, MomoGame.HEIGHT/2 + 150);
+                    MainGame.pref.setPackPref(true);
+                    soundPackToggleText.update("TYPE1", MainGame.WIDTH/2 + 125, MainGame.HEIGHT/2 + 150);
                 }
             }
 

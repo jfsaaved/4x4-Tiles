@@ -1,10 +1,8 @@
 package com.juliansaavedra.game.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.juliansaavedra.game.MomoGame;
-import com.juliansaavedra.game.handler.MomoPreferences;
+import com.juliansaavedra.game.MainGame;
 import com.juliansaavedra.game.ui.TextImage;
 
 /**
@@ -27,19 +25,19 @@ public class GameOverState extends State {
 
         difficulty = level;
 
-        if(newScore > MomoGame.pref.getHighScore()){
+        if(newScore > MainGame.pref.getHighScore()){
             highScore = newScore;
-            MomoGame.pref.setHighScore(newScore);
+            MainGame.pref.setHighScore(newScore);
         }
         else{
-            highScore = MomoGame.pref.getHighScore();
+            highScore = MainGame.pref.getHighScore();
         }
 
-        gameOver = new TextImage("GAME OVER", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 200,1);
-        scoreImage = new TextImage(""+newScore, MomoGame.WIDTH/2,MomoGame.HEIGHT/2 + 100,1);
-        hiScoreImage = new TextImage("HIGHSCORE "+highScore, MomoGame.WIDTH/2 + 150,MomoGame.HEIGHT/2, 0.50f);
-        retryText = new TextImage("RETRY", MomoGame.WIDTH/2, MomoGame.HEIGHT/2 - 100, 1);
-        backText = new TextImage("MAIN MENU", MomoGame.WIDTH/2,MomoGame.HEIGHT/2 - 200, 1);
+        gameOver = new TextImage("GAME OVER", MainGame.WIDTH/2, MainGame.HEIGHT/2 + 200,1);
+        scoreImage = new TextImage(""+newScore, MainGame.WIDTH/2, MainGame.HEIGHT/2 + 100,1);
+        hiScoreImage = new TextImage("HIGHSCORE "+highScore, MainGame.WIDTH/2 + 150, MainGame.HEIGHT/2, 0.50f);
+        retryText = new TextImage("RETRY", MainGame.WIDTH/2, MainGame.HEIGHT/2 - 100, 1);
+        backText = new TextImage("MAIN MENU", MainGame.WIDTH/2, MainGame.HEIGHT/2 - 200, 1);
 
     }
 
