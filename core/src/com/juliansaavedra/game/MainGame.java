@@ -11,7 +11,7 @@ import com.juliansaavedra.game.states.MenuState;
 
 public class MainGame extends ApplicationAdapter {
 
-    public static final String TITLE = "Momo";
+    public static final String TITLE = "4x4 Tiles";
     public static final int WIDTH = 480;
     public static final int HEIGHT = 800;
 
@@ -28,6 +28,7 @@ public class MainGame extends ApplicationAdapter {
         res = new Content();
         res.loadAtlas("pack2.pack","pack");
         res.loadTexture("background.png","bg");
+        res.loadTexture("title.png","title");
         //loadMusicPack("music0");
         pref = new MainPreferences();
 

@@ -12,23 +12,25 @@ import com.juliansaavedra.game.ui.TextImage;
 public class MenuState extends State {
 
     private TextImage play;
-    private TextImage title;
+    //private TextImage title;
     private TextImage settings;
     private TextImage exit;
 
     private Texture background;
+    private Texture title;
     private int currentBGX = 1920;
     private float timer = 1;
 
     public MenuState(GSM gsm) {
         super(gsm);
 
-        title = new TextImage("QUICK SHOW", MainGame.WIDTH / 2, MainGame.HEIGHT / 2 + 200 , 1);
+        //title = new TextImage(MainGame.TITLE.toUpperCase(), MainGame.WIDTH / 2, MainGame.HEIGHT / 2 + 200 , 1);
         play = new TextImage("START", MainGame.WIDTH / 2, MainGame.HEIGHT / 2, 1);
         settings = new TextImage("SETTINGS", MainGame.WIDTH / 2, MainGame.HEIGHT / 2 - 100, 1);
         exit = new TextImage("EXIT", MainGame.WIDTH / 2, MainGame.HEIGHT / 2 - 200, 1);
 
         background = MainGame.res.getTexture("bg");
+        title = MainGame.res.getTexture("title");
 
     }
 
@@ -72,11 +74,15 @@ public class MenuState extends State {
         sb.draw(background,currentBGX - 1920,0);
         sb.draw(background,currentBGX,0);
 
-        title.render(sb);
+        //title.render(sb);
         play.render(sb);
         settings.render(sb);
         exit.render(sb);
+
+        sb.draw(title,MainGame.WIDTH/2 - 150,MainGame.HEIGHT/2 + 100);
         sb.end();
+
+
     }
 
 }

@@ -252,7 +252,6 @@ public class PlayState extends State {
     public void update(float dt) {
 
         if(hitWrongTile){
-            splashString.hide(false);
             lastTile.playSound();
             rightTile.showRight();
             gameOverTicks--;
@@ -299,10 +298,10 @@ public class PlayState extends State {
                 }
                 else if(prepareTime <= 50 && prepareTime > 0){
                     if(!hitWrongTile) {
-                        playTime = true;
+                        prepareTime--;
                         splashString.update("GO!", MainGame.WIDTH / 2, MainGame.HEIGHT / 2);
                         splashString.hide(false);
-                        prepareTime--;
+                        playTime = true;
                     }
                     else{
                         prepareTime = 0;
