@@ -2,6 +2,7 @@ package com.juliansaavedra.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.juliansaavedra.game.MainGame;
 import com.juliansaavedra.game.ui.TextImage;
@@ -54,6 +55,10 @@ public class PlayState extends State {
     private boolean timeUp;
     private int gameOverTicks;
 
+    private Texture background;
+    private int currentBGX = 1920;
+    private float bgTimer = 1;
+
     public PlayState(GSM gsm,String difficulty){
         super(gsm);
 
@@ -78,6 +83,7 @@ public class PlayState extends State {
         initPattern(level);
 
         timeString = new TextImage(seconds+"", MainGame.WIDTH/2, MainGame.HEIGHT/2 - 300,1);
+        background = MainGame.res.getTexture("playBG");
 
     }
 
@@ -344,9 +350,21 @@ public class PlayState extends State {
                 tiles[row][col].update(dt);
             }
         }
+
         scoreString.update(score + "", MainGame.WIDTH/2, MainGame.HEIGHT/2 + 300);
         if(seconds >=0) {
             timeString.update(seconds + "", MainGame.WIDTH / 2, MainGame.HEIGHT / 2 - 300);
+        }
+
+        if(bgTimer > 0){
+            bgTimer--;
+        }
+        else if(bgTimer <= 0){
+            bgTimer = 1;
+            currentBGX--;
+            if(currentBGX <= 0){
+                currentBGX = 2132;
+            }
         }
     }
 
@@ -354,6 +372,10 @@ public class PlayState extends State {
 
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
+
+        sb.draw(background,currentBGX - 2132,0);
+        sb.draw(background,currentBGX,0);
+
         for(int row = 0 ; row < tiles.length ; row ++){
             for (int col = 0; col < tiles[0].length; col++){
                 tiles[row][col].render(sb);

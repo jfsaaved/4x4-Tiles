@@ -28,6 +28,7 @@ public class MainGame extends ApplicationAdapter {
         res = new Content();
         res.loadAtlas("pack2.pack","pack");
         res.loadTexture("background.png","bg");
+        res.loadTexture("playBG.png","playBG");
         res.loadTexture("title.png","title");
         //loadMusicPack("music0");
         pref = new MainPreferences();
