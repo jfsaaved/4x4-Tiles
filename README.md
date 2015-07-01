@@ -1,4 +1,4 @@
-# Momo
+# Android Game
 Creating an Android game from scratch using the libgdx framework.
 
 ### The Game
