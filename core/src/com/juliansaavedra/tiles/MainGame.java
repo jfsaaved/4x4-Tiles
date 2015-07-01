@@ -9,7 +9,10 @@ import com.juliansaavedra.tiles.handler.MainPreferences;
 import com.juliansaavedra.tiles.states.GSM;
 import com.juliansaavedra.tiles.states.MenuState;
 
+
+// Julian Saavedra
 public class MainGame extends ApplicationAdapter {
+
 
     public static final String TITLE = "4x4 Tiles";
     public static final int WIDTH = 480;
