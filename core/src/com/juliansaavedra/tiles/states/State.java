@@ -1,8 +1,8 @@
-package com.juliansaavedra.game.states;
+package com.juliansaavedra.tiles.states;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.juliansaavedra.game.MainGame;
+import com.juliansaavedra.tiles.MainGame;
 
 /**
  * Created by 343076 on 27/05/2015.

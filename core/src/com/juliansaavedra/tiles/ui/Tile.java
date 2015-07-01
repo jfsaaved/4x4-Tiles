@@ -1,9 +1,9 @@
-package com.juliansaavedra.game.ui;
+package com.juliansaavedra.tiles.ui;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.juliansaavedra.game.MainGame;
+import com.juliansaavedra.tiles.MainGame;
 
 /**
  * Created by 343076 on 27/05/2015.

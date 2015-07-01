@@ -1,4 +1,4 @@
-package com.juliansaavedra.game.states;
+package com.juliansaavedra.tiles.states;
 import java.util.Stack;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 

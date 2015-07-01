@@ -1,9 +1,9 @@
-package com.juliansaavedra.game.states;
+package com.juliansaavedra.tiles.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.juliansaavedra.game.MainGame;
-import com.juliansaavedra.game.ui.TextImage;
+import com.juliansaavedra.tiles.MainGame;
+import com.juliansaavedra.tiles.ui.TextImage;
 
 /**
  * Created by 343076 on 20/06/2015.

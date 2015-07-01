@@ -1,4 +1,4 @@
-package com.juliansaavedra.game.ui;
+package com.juliansaavedra.tiles.ui;
 
 /**
  * Created by 343076 on 27/05/2015.

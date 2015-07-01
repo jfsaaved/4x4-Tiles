@@ -1,13 +1,13 @@
-package com.juliansaavedra.game;
+package com.juliansaavedra.tiles;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.juliansaavedra.game.handler.Content;
-import com.juliansaavedra.game.handler.MainPreferences;
-import com.juliansaavedra.game.states.GSM;
-import com.juliansaavedra.game.states.MenuState;
+import com.juliansaavedra.tiles.handler.Content;
+import com.juliansaavedra.tiles.handler.MainPreferences;
+import com.juliansaavedra.tiles.states.GSM;
+import com.juliansaavedra.tiles.states.MenuState;
 
 public class MainGame extends ApplicationAdapter {
 
@@ -27,7 +27,7 @@ public class MainGame extends ApplicationAdapter {
 
         res = new Content();
         res.loadAtlas("pack2.pack","pack");
-        res.loadTexture("background.png","bg");
+        res.loadTexture("background.png", "bg");
         res.loadTexture("playBG.png","playBG");
         res.loadTexture("title.png","title");
         //loadMusicPack("music0");

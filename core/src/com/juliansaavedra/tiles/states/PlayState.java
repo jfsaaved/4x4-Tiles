@@ -1,12 +1,12 @@
-package com.juliansaavedra.game.states;
+package com.juliansaavedra.tiles.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.juliansaavedra.game.MainGame;
-import com.juliansaavedra.game.ui.TextImage;
-import com.juliansaavedra.game.ui.Tile;
+import com.juliansaavedra.tiles.MainGame;
+import com.juliansaavedra.tiles.ui.TextImage;
+import com.juliansaavedra.tiles.ui.Tile;
 
 import java.util.Random;
 
@@ -373,7 +373,7 @@ public class PlayState extends State {
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        sb.draw(background,currentBGX - 2132,0);
+        sb.draw(background, currentBGX - 2132, 0);
         sb.draw(background,currentBGX,0);
 
         for(int row = 0 ; row < tiles.length ; row ++){
