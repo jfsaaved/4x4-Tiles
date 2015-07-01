@@ -13,6 +13,7 @@ public class Tile extends Box {
 
     private TextureRegion light;
     private TextureRegion dark;
+    private TextureRegion wrong;
 
     private boolean selected;
 
@@ -30,6 +31,7 @@ public class Tile extends Box {
     public boolean empty;
     public boolean cdBool;
     public float coolDown;
+    private boolean isWrong;
 
     public Tile(float x, float y, float width, float height, int num) {
 
@@ -42,9 +44,11 @@ public class Tile extends Box {
         coolDown = 0;
         empty = false;
         cdBool = false;
+        isWrong = false;
 
         light = MomoGame.res.getAtlas("pack").findRegion("light");
         dark = MomoGame.res.getAtlas("pack").findRegion("dark");
+        wrong = MomoGame.res.getAtlas("pack").findRegion("wrong");
         sound = MomoGame.res.getSound(Integer.toString(num));
     }
 
@@ -80,9 +84,14 @@ public class Tile extends Box {
         expiration = 0;
         if(selected == false) {
             selected = true;
-            if(MomoGame.pref.getSoundPref())
+            if(MomoGame.pref.getSoundPref()) {
                 sound.play();
+            }
         }
+    }
+
+    public void showRight(){
+        isWrong = true;
     }
 
     public void updatePressed(){
@@ -145,6 +154,9 @@ public class Tile extends Box {
     public void render(SpriteBatch sb) {
         if(selected) {
             sb.draw(light, x - width / 2, y - height / 2, width, height);
+        }
+        else if(isWrong){
+            sb.draw(wrong, x - width / 2, y - height / 2, width, height);
         }
         else {
             sb.draw(dark, x - width / 2, y - height / 2, width, height);

@@ -48,6 +48,11 @@ public class PlayState extends State {
     private int bonus;
 
     private Tile letTileFinish;
+    private Tile rightTile;
+    private Tile lastTile;
+    private boolean hitWrongTile;
+    private boolean timeUp;
+    private int gameOverTicks;
 
     public PlayState(GSM gsm,String difficulty){
         super(gsm);
@@ -208,8 +213,9 @@ public class PlayState extends State {
             for (int row = 0; row < tiles.length; row++) {
                 for (int col = 0; col < tiles[0].length; col++) {
                     if (tiles[row][col].contains(mouse.x, mouse.y)) {
-                        tiles[row][col].playSound();
                         if (playIndex < 16 && playTime) {
+                            tiles[row][col].playSound();
+                            lastTile = tiles[row][col];
                             if (tiles[row][col] == tiles[patternRow[playIndex]][patternCol[playIndex]]) {
                                 tiles[row][col].cdToggle(true);
                                 if (!tiles[row][col].isEmpty()) {
@@ -230,7 +236,10 @@ public class PlayState extends State {
                             }
                             else {
                                 if (!tiles[row][col].justSelected()) {
-                                    gsm.set(new GameOverState(gsm,score,difficulty));
+                                    playTime = false;
+                                    hitWrongTile = true;
+                                    gameOverTicks = 60;
+                                    rightTile = tiles[patternRow[playIndex]][patternCol[playIndex]];
                                 }
                             }
                         }
@@ -242,9 +251,30 @@ public class PlayState extends State {
 
     public void update(float dt) {
 
+        if(hitWrongTile){
+            splashString.hide(false);
+            lastTile.playSound();
+            rightTile.showRight();
+            gameOverTicks--;
+            if(gameOverTicks <= 0){
+                gsm.set(new GameOverState(gsm,score,difficulty));
+            }
+        }
+
+        if(timeUp){
+            splashString.update("TIME'S UP",MomoGame.WIDTH/2,MomoGame.HEIGHT/2);
+            splashString.hide(false);
+            gameOverTicks--;
+            if(gameOverTicks <= 0){
+                gsm.set(new GameOverState(gsm,score,difficulty));
+            }
+        }
+
         if(playTime) {
             if (seconds < 0) {
-                gsm.set(new GameOverState(gsm,score,difficulty));
+                playTime = false;
+                timeUp = true;
+                gameOverTicks = 60;
             } else {
                 if (milliseconds >= 0) {
                     milliseconds--;
@@ -268,14 +298,14 @@ public class PlayState extends State {
                     prepareTime--;
                 }
                 else if(prepareTime <= 50 && prepareTime > 0){
-                    playTime = true;
-                    if(splash > 0){ // If user selected a wrong tile, let text change to "wrong" and discard "go"
-                        prepareTime = 0;
-                    }
-                    else {
+                    if(!hitWrongTile) {
+                        playTime = true;
                         splashString.update("GO!", MomoGame.WIDTH / 2, MomoGame.HEIGHT / 2);
                         splashString.hide(false);
                         prepareTime--;
+                    }
+                    else{
+                        prepareTime = 0;
                     }
                 }
                 else if(prepareTime <= 0){
