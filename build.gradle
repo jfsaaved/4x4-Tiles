@@ -14,7 +14,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = 'Momo'
+        appName = '4x4 Tiles'
         gdxVersion = '1.6.0'
         roboVMVersion = '1.2.0'
         box2DLightsVersion = '1.3'

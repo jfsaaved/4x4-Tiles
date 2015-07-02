@@ -1,6 +1,8 @@
 package com.juliansaavedra.tiles.states;
-import java.util.Stack;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import java.util.Stack;
 
 /**
  * Created by 343076 on 27/05/2015.
