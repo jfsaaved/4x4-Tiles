@@ -1,5 +1,5 @@
 # Android Game
-Creating an Android game from scratch using the libgdx framework.
+Creating an Android game from scratch using the libgdx framework. [Available on Google Play.](https://play.google.com/store/apps/details?id=com.juliansaavedra.tiles.android&hl=en)
 
 ### The Game
 The idea of the game is to show a pattern (selected from a list of patterns) to a user and the user has to imitate the same pattern. User gets points by hitting the right tiles. Running out of time or hitting the wrong tiles result in a game over.
