@@ -35,6 +35,16 @@ public class MainGame extends ApplicationAdapter {
         res.loadTexture("title.png","title");
         //loadMusicPack("music0");
         pref = new MainPreferences();
+        if(!pref.getPref().contains("Sound")){
+            pref.setSoundPref(true);
+        }
+        if(!pref.getPref().contains("Sound Pack")){
+            pref.setPackPref(true);
+        }
+        if(pref.getPref() == null){
+            pref.setSoundPref(true);
+            pref.setPackPref(true);
+        }
 
         sb = new SpriteBatch();
         gsm = new GSM();

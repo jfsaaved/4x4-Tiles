@@ -6,12 +6,18 @@ import com.badlogic.gdx.Preferences;
 /**
  * Created by 343076 on 22/06/2015.
  */
-public class MainPreferences {
+public class MainPreferences{
 
     private Preferences prefs;
 
     public MainPreferences(){
+
         prefs = Gdx.app.getPreferences("save");
+
+    }
+
+    public Preferences getPref(){
+        return prefs;
     }
 
     public void setPackPref(boolean b){
