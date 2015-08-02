@@ -10,6 +10,7 @@ import com.juliansaavedra.tiles.MainGame;
  */
 public class Tile extends Box {
 
+    // Test
     private TextureRegion light;
     private TextureRegion dark;
     private TextureRegion wrong;
