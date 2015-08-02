@@ -55,24 +55,8 @@ public class Tile extends Box {
         timer = t;
     }
 
-    public void cdToggle(boolean b){ // Avoid repeating hits w/ isTouched
-        cdBool = b;
-        if(cdBool == true){
-            coolDown = 1000f; // Arbitrary large number bigger than the count down timer
-        }
-        else{
-            coolDown = 0f;
-        }
-    }
-
-    public void cdTimer(){ // Reset the cool down
-        if(coolDown > 0){
-            cdBool= true;
-            coolDown--;
-        }
-        else{
-            cdBool = false;
-        }
+    public void cdToggle(){ // Avoid repeating hits w/ isTouched
+        cdBool = true;
     }
 
     public boolean justSelected(){
@@ -103,12 +87,8 @@ public class Tile extends Box {
             }
         }
         else{
-            coolDown = 0;
+            cdBool = false;
         }
-    }
-
-    public void stopSound(){
-        sound.stop();
     }
 
     public int getPoint(){
@@ -121,12 +101,6 @@ public class Tile extends Box {
             point = 0;
             empty = true;
             return point;
-        }
-    }
-
-    public void reset(){
-        if(empty == true){
-            empty = false;
         }
     }
 
@@ -147,7 +121,6 @@ public class Tile extends Box {
             if(height > totalHeight) height = totalHeight;
         }
 
-        cdTimer();
         updatePressed();
     }
     public void render(SpriteBatch sb) {
