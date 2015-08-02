@@ -223,7 +223,7 @@ public class PlayState extends State {
                             tiles[row][col].playSound();
                             lastTile = tiles[row][col];
                             if (tiles[row][col] == tiles[patternRow[playIndex]][patternCol[playIndex]]) {
-                                tiles[row][col].cdToggle(true);
+                                tiles[row][col].cdToggle();
                                 if (!tiles[row][col].isEmpty()) {
 
                                     playIndex++;
